@@ -11,4 +11,4 @@ add_executable(annual ${annual_SRCS} ${annual_MOC_CPP} ${annual_RES_CPP})
 target_link_libraries(annual ${QT_LIBRARIES})
 
 install(TARGETS annual DESTINATION bin)
-configure_file("config.h.in" "config.h")
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/config.h.in" "${CMAKE_CURRENT_BINARY_DIR}/config.h")
