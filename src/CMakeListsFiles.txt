@@ -1,0 +1,3 @@
+SET(annual_SRCS aboutdialog.cpp anniv.cpp card.cpp cardinserter.cpp listdelegate.cpp listmodel.cpp main_cli.cpp main.cpp mainwindow.cpp settingsdialog.cpp tabledelegate.cpp tablemodel.cpp tableview.cpp undocommand.cpp wizardpages.cpp ) 
+SET(annual_RES_SRC annual.qrc )
+SET(annual_MOC_H aboutdialog.h cardinserter.h listmodel.h mainwindow.h settingsdialog.h tablemodel.h wizardpages.h )

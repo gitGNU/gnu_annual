@@ -1,0 +1,742 @@
+#!/usr/bin/perl
+#
+# annual - Reminder for annual events
+# Keeps track of all your anniversaries and hopefully reminds you at the right time.
+# Copyright (C) 2011 Dominik Köppl
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation, either version 3 of the License, or (at your option)
+# any later version.
+# 
+# This program is distributed in the hope that it will be useful, but WITHOUT 
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+# more details.
+# 
+# You should have received a copy of the GNU General Public License along
+# with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+use strict;
+use warnings;
+use Getopt::Long;
+use Pod::Usage;
+use MIME::QuotedPrint;
+use Log::Log4perl qw(:easy);
+use XML::XPath::XMLParser;
+use XML::XPath;
+
+sub vcard;
+sub hcard;
+sub gmx;
+sub outlook;
+sub ics;
+
+my $programname = "$0";
+my $PACKAGENAME = '@APPLICATION_NAME@';
+my $VERSION = '@APPLICATION_VERSION@';
+my %formats = ('vcard' => \&vcard, 'hcard' => \&hcard, 'gmx' => \&gmx, 'outlook' => \&outlook, 'ics' => \&ics);
+my $format = $formats{'vcard'};
+
+my $verbosity = $DEBUG;
+my $logfile = "";
+
+
+sub trim($)
+{
+	my $s = ""; 
+	if(defined($_[0]))
+	{
+		$s .= $_[0];
+	}
+	chomp($s);
+	$s =~ s/^[\s\t]+//;
+	$s =~ s/[\s\t]+$//;
+	return $s;
+}
+
+sub help($)
+{
+	my $message_text  = "2annual - Converter from various formats to the annual file format.";
+	my $exit_status   = 0;          ## The exit status to use
+	if(defined($_[0]))
+	{
+		$exit_status = shift;
+	}
+	my $verbose_level = 1;          ## The verbose level to use	
+	my $filehandle    = \*STDERR;   ## The filehandle to write to
+
+	pod2usage( { 
+			-message => $message_text ,
+			-exitval => $exit_status  ,  
+			-verbose => $verbose_level,  
+			-output  => $filehandle } );
+
+	print 'Report bugs to <dominik@devwork.org>';
+
+}
+sub version
+{
+	print "Version $programname, belonging to the application $PACKAGENAME $VERSION\n";
+	print <<EOF;
+
+Copyright (C) 2011 Dominik Koeppl
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+EOF
+
+}
+
+sub guess #guess the input type
+{
+	DEBUG("No format passed. Now guessing input format");
+	my $l = lc(<IN>);
+
+	if($l =~ m/ab_addresses:/)
+	{
+		return \&gmx;
+	}
+	elsif($l =~ m/begin:vcalendar/)
+	{
+		return \&ics;
+	}
+	elsif($l =~ m/begin:vcard/)
+	{
+		return \&vcard;
+	}
+	elsif( ($l =~ tr/,//) > 5) #the outlook csv has quite a lot of commas
+	{
+		return \&outlook;
+	}
+	elsif( ($l =~ m/doctype/) || ($l =~ m/xml/))
+	{
+		return \&hcard;
+	}
+	return \&vcard;
+}
+
+sub program_options
+{
+	my %opts;
+	my $tohelp = 0;
+	my $toversion = 0;
+	my $toformat = '';
+	my $infile = '';
+	my $outfile = '';
+	my $toverbose = '';
+	GetOptions(
+		'h|?|help' => sub { help(0) },
+		'manual' => \$tohelp,
+		'V|version' => \$toversion,
+		'v|verbose' => \$toverbose,
+		'i|infile=s' => \$infile,
+		'o|outfile=s' => \$outfile,
+		'f|format=s' => \$toformat,
+		'l|logfile=s' => \$logfile);
+	
+	if($tohelp)
+	{
+		pod2usage(-verbose => 2);
+		exit 0;
+	}
+	if($toversion)
+	{
+		version();
+		exit 0;
+	}
+	if($toverbose)
+	{
+		$verbosity = $DEBUG;
+	}
+	else
+	{
+		$verbosity = $ERROR;
+	}
+	if($#ARGV > -1)
+	{
+		pod2usage(-verbose => 2);
+		exit 1;
+	}
+	if($infile)
+	{
+		DEBUG("opening $infile for reading");
+		open(IN, "<$infile") || die("Cannot open file \'$infile\' for reading!");
+	}
+	else
+	{
+		DEBUG("opening stdin for reading");
+		open(IN, "<&STDIN") || die("Cannot read from stdin");
+	}
+	if($outfile)
+	{
+		DEBUG("opening $outfile for writing");
+		open(OUT, ">$outfile") || die("Cannot open file \'$outfile\' for writing!");
+	}
+	else
+	{
+		DEBUG("opening stdout for writing");
+		open(OUT, ">&STDOUT") || die("Connot write to stdout");
+	}
+	if($toformat)
+	{
+		if(!defined($formats{$toformat}))
+		{
+			print STDERR "Unknown format!";
+			help(2);
+		}
+		DEBUG("using parser $toformat");
+		$format = $formats{$toformat};
+	}
+	else
+	{
+		$format = guess();
+	}
+}
+
+
+sub _vcard(%) #(const \%map)
+{
+	my(%map) = %{$_[0]};
+	my $forename = ""; 
+	my $lastname = ""; 
+	my $bday = ""; 
+	my $xanniv = ""; 
+	my $anniv = ""; 
+	my $category = "";
+	if($map{'name'} && $map{'name'} =~ m/([^ ]+)\s+(.+)/)
+	{
+		DEBUG(">has name");
+		($forename, $lastname) = $map{'name'} =~ m/([^ ]+)\s+(.+)/;
+	}
+	elsif($map{'fn'} && $map{'fn'} =~ m/([^ ]+)\s+(.+)/)
+	{
+		($forename, $lastname) = $map{'fn'} =~ m/([^ ]+)\s+(.+)/;
+		DEBUG(">has fn");
+	}
+	elsif($map{'n'} && $map{'n'} =~ m/([^;]+);([^;]+)/)
+	{
+		($lastname, $forename) = $map{'n'} =~ m/([^;]+);([^;]+)/;
+		DEBUG(">has n");
+	}
+	else
+	{
+		DEBUG(">missing name");
+		return 1;
+	}
+	if($map{'role'})
+	{
+		$category = $map{'role'};
+		DEBUG(">has role");
+	}
+	if($map{'bday'} && $map{'bday'} =~ m/(\d{4}.\d{2}.\d{2})/)
+	{
+		($bday) = $map{'bday'} =~ m/(\d{4}.\d{2}.\d{2})/;
+		print OUT "BIRTH  ;$bday;$forename $lastname;$category\n";
+		DEBUG(">has bday");
+	}
+	if($map{'x-anniv'} && $map{'x-anniv'} =~ m/(\d{4}.\d{2}.\d{2})/)
+	{
+		($anniv) = $map{'x-anniv'} =~ m/(\d{4}.\d{2}.\d{2})/;
+		print OUT "WEDDING;$anniv;$forename $lastname;$category\n";
+		DEBUG(">has xanniv");
+	}
+	if($map{'x-anniversary'} && $map{'x-anniversary'} =~ m/(\d{4}.\d{2}.\d{2})/)
+	{
+		($xanniv) = $map{'x-anniversary'} =~ m/(\d{4}.\d{2}.\d{2})/;
+		print OUT "ANNIV  ;$xanniv;$forename $lastname;$category\n";
+		DEBUG(">has anniv");
+	}
+	return 0;
+}
+
+sub vcard #(void)
+{
+	DEBUG("Using parser vcard");	
+	my %map = ();
+	my $key = "";
+	my $value = "";
+	while(my $l = <IN>)
+	{
+		if($l =~ m/^#/)
+		{
+			next;
+		}
+		chomp($l);
+		$l =~ s/\r?\n//; #delete newlines
+		($key, $value) = $l =~ m/^([^:]+):(.+)$/;
+		$key = lc(trim($key));
+		$value = trim($value);
+		if($key eq "end" && lc($value) eq "vcard")
+		{
+			
+			&_vcard(\%map);
+			%map = ();
+		}
+		if($key =~ m/-x-anniversary/) #special anniversary
+		{
+			$key = "x-anniv";
+		}
+		if($key =~ m/quoted-printable/)
+		{
+			$value = decode_qp($value);
+		}
+		$key =~ s/;.*$//; 
+		
+		#delete everything after ; which is mostly encoding-stuff
+	#	if($map{$key})
+	#	{
+		#	if(&_vcard(\%map) == 0)
+		#	{
+		#		%map = ();
+		#	}
+	#	}
+
+		DEBUG("Setting key-value: \'$key\' = \'$value\' \n");
+		$map{$key} = $value;
+
+	}
+	&_vcard(\%map);
+}
+
+sub _ics(%) #(const \%map)
+{
+	my(%map) = %{$_[0]};
+	my $forename = ""; 
+	my $lastname = ""; 
+	my $date = ""; 
+	my $category = "";
+	my $type = "ANNIV   ";
+	if($map{'summary'})
+	{
+		DEBUG("has summary");
+		if($map{'summary'} =~ m/\w+\s\w+/)
+		{
+			($forename, $lastname) = $map{'summary'} =~ m/([^ ]+)\s+(.+)/;
+		}
+		else
+		{
+			$forename = $map{'summary'};
+		}
+	}
+	else
+	{
+		DEBUG("missing summary");
+		return 1;
+	}
+
+	if($map{'dtstart'} && $map{'dtstart'} =~ m/(\d{8})/)
+	{
+		DEBUG("has dtstart");
+		($date) = $map{'dtstart'} =~ m/(\d{8})/;
+		substr($date, 4, 0) = '.';
+		substr($date, 7, 0) = '.';
+	}
+	else
+	{
+		DEBUG("missing dtstart");
+		return 1;
+	}
+	if($map{'location'})
+	{
+		DEBUG("has location");
+		$category = $map{'location'};
+	}
+	if($map{'categories'})
+	{
+		if(lc($map{'categories'}) =~ m/anniversary/)
+		{
+			$type = "ANNIV   ";
+		}
+		elsif(lc($map{'categories'}) =~ m/holiday/)
+		{
+			$type = "HOLIDAY ";
+		}
+		elsif(lc($map{'categories'}) =~ m/birthday/)
+		{
+			$type = "BIRTHDAY";
+		}
+	}
+	print OUT "$type;$date;$forename $lastname;$category\n";
+	return 0;
+}
+
+sub ics #(void)
+{
+	DEBUG("Using parser ics");	
+	my %map = ();
+	my $key = "";
+	my $value = "";
+	while(my $l = <IN>) #find first BEGIN:VEVENT
+	{
+		if($l =~ m/BEGIN:VEVENT/)
+		{
+			last;
+		}
+	}
+	while(my $l = <IN>)
+	{
+		if($l =~ m/^#/)
+		{
+			next;
+		}
+		chomp($l);
+		$l =~ s/\r?\n//; #delete newlines
+		($key, $value) = $l =~ m/^([^:]+):(.+)$/;
+		$key = lc(trim($key));
+		$value = trim($value);
+		$key =~ s/;.*$//; #delete everything after ; which is mostly encoding-stuff
+		if($map{$key})
+		{
+			if(&_ics(\%map) == 0)
+			{
+				%map = ();
+			}
+		}
+
+		DEBUG("Setting key-value: \'$key\' = \'$value\' \n");
+		$map{$key} = $value;
+
+	}
+	&_ics(\%map);
+}
+
+
+
+sub _hcard(%) #(%map)
+{
+	my(%map) = %{$_[0]};
+	my $forename = ""; 
+	my $lastname = ""; 
+	my $bday = ""; 
+	my $xanniv = ""; 
+	my $anniv = ""; 
+	my $category = "";
+	if($map{'family-name'})
+	{
+		DEBUG("has family-name");
+		($lastname) = $map{'family-name'};
+	}
+	if($map{'given-name'})
+	{
+		DEBUG("has given-name");
+		($forename) = $map{'given-name'};
+	}
+	elsif($map{'fn'} && $map{'fn'} =~ m/([^ ]+)\s+(.+)/)
+	{
+		DEBUG("has fn");
+		($forename, $lastname) = $map{'fn'} =~ m/([^ ]+)\s+(.+)/;
+	}
+	elsif($map{'n'} && $map{'n'} =~ m/([^ ]+)\s+(.+)/)
+	{
+		DEBUG("has n");
+		($forename, $lastname) = $map{'n'} =~ m/([^ ]+)\s+(.+)/;
+	}
+	else
+	{
+		DEBUG("missing name");
+		return 1;
+	}
+	if($map{'bday'})
+	{
+		DEBUG("has bday");
+		print OUT "BIRTH  ;$map{'bday'};$forename $lastname;$category\n";
+	}
+	else
+	{
+		DEBUG("missing date");
+		return 1;
+	}
+	return 0;
+}
+
+
+sub hcard #(void)
+{
+	DEBUG("Using parser hcard");	
+	my %map = ();
+	my $key = "";
+	my $value = "";
+	my $xp = XML::XPath->new(ioref => \*IN);
+	my $nodeset = $xp->find('//*[@class]');
+	foreach my $node ($nodeset->get_nodelist)
+	{
+#		print "FOUND:" . XML::XPath::XMLParser::as_string($node) . "\n";
+#		print "CAPTION:" . $node->getName() . "\n";
+#		print "ATTR:" . $node->getAttribute("class") . "\n";
+#		print "TEXT:" . $node->string_value() . "\n";
+		if(!defined($node->getAttribute("class")))
+		{
+			next;
+		}
+		else
+		{
+			$key = $node->getAttribute("class");
+		}
+		$key =~ s/\r?\n//gm; #delete newlines
+		$key = lc(trim($key));
+		if($key =~ m/(^fn )|( fn$)|(^fn$)/)
+		{
+			$key = "fn";
+		}
+		if($key =~ m/(^n )|( n$)|(^n$)/)
+		{
+			$key = "n";
+		}
+
+		if(defined($map{$key}))
+		{
+			if(&_hcard(\%map) == 0)
+			{
+				%map = ();
+			}
+		}
+
+		my $value = $node->string_value();
+		$value =~ s/\r?\n//gm; #delete newlines
+		$value = trim($value);
+		$value =~ s/\s+/ /; #delete spaces
+		if($key eq "bday")
+		{
+			DEBUG("Start reading bday");
+			my $bdayset = $node->find('@title');
+			foreach my $bday ($bdayset->get_nodelist)
+			{
+				my $val = $bday->string_value;
+				DEBUG("Is date?: $val");
+				if($val =~ m/(\d{4}.\d{2}.\d{2})/)
+				{
+					($value) = $val =~ m/(\d{4}.\d{2}.\d{2})/;
+					last;
+				}
+			}
+			DEBUG("End-Reading bday");
+		}
+		DEBUG("Setting key-value: \'$key\' = \'$value\' \n");
+		$map{$key} = $value;
+		
+	}
+	&_hcard(\%map);
+}
+
+
+sub quit #(void)
+{
+	close(IN);
+	close(OUT);
+}
+
+
+
+sub gmx #(void)
+{
+	DEBUG("Using parser gmx");	
+	
+	my $defsline = <IN>;
+	if($defsline =~ m/AB_ADDRESSES:/) #first line is junk
+	{
+		$defsline = <IN>; #should look like: Address_id,Nickname,Firstname,Lastname,Title,Birthday,Comments,Change_date,Status,Address_link_id,Categories
+	}
+	DEBUG("defsline: $defsline");
+	my @cols = split(/,/, trim(lc($defsline)));
+	my %colnames = ();
+	for(my $i = 0; $i < scalar @cols; ++$i)
+	{
+		DEBUG("colname[$cols[$i]] =  $i");
+		$colnames{$cols[$i]} = $i;
+	}
+
+	while(my $l = <IN>)
+	{
+		if($l =~ m/^####/)
+		{
+			last;
+		}
+
+		my @values = split(/#/, trim($l));
+		my $bday = "";
+		if(defined($colnames{'birthday'}) && defined($values[$colnames{'birthday'}]))
+		{
+			($bday) = $values[$colnames{'birthday'}] =~ m/(\d{4}.\d{2}.\d{2})/;
+		}
+		if(!$bday)
+		{
+			next;
+		}
+		print OUT "BIRTH  ;$bday;$values[$colnames{'firstname'}] $values[$colnames{'lastname'}];$values[$colnames{'comments'}]\n";
+	}
+}
+
+
+sub outlook #(void)
+{
+	DEBUG("Using parser outlook");	
+	
+	my $defsline = <IN>; #first line is junk
+
+	my @types = ("BIRTH  ", "WEDDING" );
+	while(my $l = <IN>)
+	{
+		my @values = split(/,/, trim($l));
+		my $date = "";
+		my $type = 0;
+		for(my $i = 0; $i < scalar @values; ++$i)
+		{
+			$values[$i] =~ s/\"//g;
+			DEBUG("values[$i] = $values[$i]");
+			($date) = $values[$i] =~ m/(\d{4}.\d{2}.\d{2})/;
+			if($date)
+			{
+				DEBUG("type = $types[$type]");
+				DEBUG("date = $date");
+				print OUT "$types[$type];$date;$values[2] $values[1];\n";
+				++$type;
+				if($type == 2) { last; }
+			}
+		}
+	}
+}
+
+program_options();
+if($logfile)
+{
+	Log::Log4perl->easy_init( { level => $verbosity, file  => ">> $logfile" });
+}
+else
+{
+	Log::Log4perl->easy_init( { level => $verbosity });
+}
+
+&$format();
+quit();
+exit 0;
+
+
+
+####
+__END__
+=pod
+=encoding utf8
+
+=head1 NAME
+
+2annual - Converter from various source formats to the annual file format
+
+=head1 SYNOPSIS
+
+2annual [--verbosity] [B<--infile>=I<filename>] [B<--format>=I<string>] [B<--outfile>=I<filename>]
+[B<--logfile>=I<lfilename>]
+
+2annual [B<--help>|B<-?>|B<--manual>|B<--version>] 
+
+=head1 DESCRIPTION
+
+The program annual lacks in supporting mayor standard file formats like VCARD. 
+Therefore you can use this program to import the data of these files. 
+The output can be easily appended to an existing database.
+
+=head1 OPTIONS
+
+=over 8
+
+=item B<-h>, B<--help>, B<-?>
+
+displays a short help
+
+=item B<-m>, -B<--manual> 
+
+displays this manual
+
+=item B<-V>, -B<--version> 
+
+shows the current version of the program
+
+=item B<-v>, -B<--verbosity> 
+
+Turns on verbosity and showing debug information. Without passing an argument for the logfile, all information is passed to stderr.
+
+=item B<-l> -I<filename>, -B<--logfile>=-I<filename>
+
+Saves the debug information in a logfile.
+
+=item B<-i>, -B<--infile> 
+
+Specify an input file for extracting data. 
+If you do not use this argument, the program will listen on the standard input.
+
+=item B<-f>, -B<--format> 
+
+Tell the program which format you want to use.
+The following formats are currently supported:
+
+=over 8
+
+=item B<ics> 
+
+iCalendar
+
+=item B<outlook>
+
+Outlook csv-format
+
+=item B<gmx>
+
+the file you get after exporting an addressbook at gmx.net
+
+=item B<vcard>
+
+=item B<hcard>
+
+=back
+
+=item B<-o>, -B<--outfile> 
+
+Specify an output file for saving the data.
+If you do not use this argument, the program will write to the standard output.
+
+
+
+=back
+
+=head1 EXAMPLES
+
+Read-in a ics file and show the output
+
+=over 8
+
+=item 2annual -i foobar.ics -f ics 
+
+=back
+
+=head1 EXIT STATUS
+
+2annual returns a zero if it succeeds to import the data.
+Non zero will be passed on error.
+
+=head1 SEE ALSO
+
+L<annual(1)>
+
+=head1 REPORTING BUGS
+
+If you found a bug in this program, do not hesitate to write a mail to <dominik@devwork.org>
+
+=head1 CAVEATS
+
+Not using gettext or any i10n.
+
+=head1 ACKNOWLEDGEMENTS
+
+Goodbye, and thank's for all the fish!
+
+=head1 AUTHOR
+
+Dominik Köppl
+
+
+=head1 COPYRIGHT
+
+Copyleft (C) 2011 by Dominik Köppl
+
+
+=cut

@@ -1,0 +1,28 @@
+== Annual ==
+Annual is a program to remind you for annual events like birthdays, holidays, etc.
+It consists of a GUI-application providing the possibility to create, edit and query a database 
+and of a console application for displaying events without graphical dependencies.
+Additionally, the project provides a script which can import various file formats
+
+== Installation ==
+Starting the first time will show you a wizard which can create a new database file for your annual dates to remind. 
+Just specify a filename for your database by clicking "New database".
+
+== Populating data ==
+Finally, the program will show you a list and an edit tab. 
+First write all your data in the edit tab. 
+The last line is always empty, e.g. putting data in this line creates a new entry. 
+The list tab will be magically populated with the data entered in the edit tab. 
+You can control your input data by reviewing the results shown in the list tab which displays all dates.
+
+== Usage ==
+By invoking `annual.exe -q`, the program will only spawn a window, if there is anything to remind 
+(e.g. you can specify in the option 'warning days' in the configuration the dayspan in which a date is considered as 'remindable').
+Putting a link to "annual.exe -q" in your autorun folder should finish the setup. 
+
+== Without X ==
+You can also run the application in console mode by parameter "-l".
+Console mode only displays events (e.g. you have no editor).
+This mode is useful if you want to be reminded when opening a terminal.
+A possible scenario is to put the output in /etc/motd by cron. Just add to your crontab
+@daily annual -l > /etc/motd
