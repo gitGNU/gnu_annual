@@ -94,6 +94,7 @@ QMainWindow(parent), settings(new QSettings(this))
 		settings->setValue("warningDays", 7);
 		settings->setValue("criticalColor", "#7f0000");
 		settings->setValue("warningColor", "#7f7f00");
+		settings->setValue("showInserter", true);
 
 		if (!useWizard(this,settings))
 		{
@@ -171,10 +172,12 @@ QMainWindow(parent), settings(new QSettings(this))
 
 	listview->setModel(listmodel);
 
-	QTabWidget *tabwidget = new QTabWidget(this);
+	tabwidget = new QTabWidget(this);
 	tabwidget->addTab(listview, QIcon::fromTheme("view-fullscreen"), tr("View"));
 	tabwidget->addTab(tableview, QIcon::fromTheme("accessories-text-editor"), tr("Edit"));
 	setCentralWidget(tabwidget);
+	connect(tabwidget, SIGNAL(currentChanged(int)), this, SLOT(OnCurrentChanged(int)));
+
 
 
 	QAction *save = new QAction(QIcon::fromTheme("document-save", style()->standardIcon(QStyle::SP_DriveFDIcon)), tr("Save"), this);
@@ -269,15 +272,16 @@ QMainWindow(parent), settings(new QSettings(this))
 	this->statusBar();
 
 	/* QAction* undo = QAction* redo = */
-	QToolBar *tool = this->addToolBar(tr("Options"));
-	tool->addAction(save);
-	tool->addAction(remove);
-	tool->addAction(undo);
-	tool->addAction(redo);
-	tool->addAction(print);
-	tool->addAction(config);
+	toolbar = this->addToolBar(tr("Options"));
+	toolbar->addAction(save);
+	toolbar->addAction(remove);
+	toolbar->addAction(undo);
+	toolbar->addAction(redo);
+	toolbar->addAction(print);
+	toolbar->addAction(config);
+	toolbar->hide();
 
-
+	// CONFIG
 	QVariant geometry = settings->value("mainwidget/geometry");
 	if(geometry.isNull())
 		showMaximized();
@@ -285,6 +289,21 @@ QMainWindow(parent), settings(new QSettings(this))
 		restoreGeometry(geometry.toByteArray());
 
 	
+}
+
+void MainWindow::OnCurrentChanged(int index)
+{
+	if(index < 0) return;
+	if(index == 0) 
+	{
+		cardinserterDockWidget->hide();
+	}
+	else
+	{
+		if(settings->value("showInserter", false).toBool())
+			cardinserterDockWidget->show();
+		toolbar->show();
+	}
 }
 
 void MainWindow::OnAboutDialog()
@@ -338,6 +357,8 @@ void MainWindow::closeEvent(QCloseEvent * event)
 	else
 		event->accept();
 	settings->setValue("mainwidget/geometry", saveGeometry());
+	if(tabwidget->currentIndex() != 0)
+		settings->setValue("showInserter", cardinserterDockWidget->isVisible());
 }
 
 bool sortIntReverse(int a, int b)

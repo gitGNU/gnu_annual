@@ -5,8 +5,8 @@ set (APPLICATION_VERSION_MINOR 0)
 set (APPLICATION_VERSION_PATCH 0)
 set (APPLICATION_VERSION "${APPLICATION_VERSION_MAJOR}.${APPLICATION_VERSION_MINOR}.${APPLICATION_VERSION_PATCH}")
 set (PROJECT_SOURCE_DIR src)
-set (HOMEPAGE "www.devwork.org/annual")
-set (EMAIL "dominik@devwork.org")
+set (HOMEPAGE "http://annual.berlios.de/")
+set (EMAIL "niki@users.berlios.de")
 
 IF(WIN32 AND NOT UNIX)
 	set (EXECUTABLE "annual.exe")
@@ -74,6 +74,9 @@ set(DEBIAN_PACKAGE_BUILDS_DEPENDS "debhelper (>= 7), g++, libqt4-dev")
 set(CPACK_RPM_PACKAGE_LICENSE "GPL")
 set(CPACK_RPM_PACKAGE_GROUP "Applications/Databases")
 set(CPACK_RPM_PACKAGE_REQUIRES "qt")
+set(CPACK_RPM_PACKAGE_SUMMARY "Keeps track of pending events and reminds you hopefully in right time.")
+set(CPACK_RPM_PACKAGE_DESCRIPTION CPACK_PACKAGE_DESCRIPTION_SUMMARY)
+
 
 
 #osx

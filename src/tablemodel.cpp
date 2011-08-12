@@ -48,8 +48,7 @@ QVariant TableModel::data(const QModelIndex & index, int role) const
 	if (index.row() == cards.size() && index.column() == COLUMN_DATE)
 		return QDate();			// Give a QDate to the delagate to show
 								// QDateEdit
-	if (index.row() >= cards.size())
-		return QVariant(tr("(null)"));
+	if (index.row() >= cards.size()) return QVariant(); //tr("(null)"));
 
 
 
@@ -67,7 +66,7 @@ QVariant TableModel::data(const QModelIndex & index, int role) const
 			return ref.date().toString(Anniv::instance().shortDateFormat());
 		}
 	case COLUMN_YEARENABLED:
-		return ref.hasYear()? tr("with") : tr("without");
+		return ref.hasYear()? tr("yes") : tr("no");
 	case COLUMN_COMMENT:
 		return ref.comment();
 	case COLUMN_DAYSLEFT:
@@ -97,7 +96,7 @@ QVariant TableModel::headerData(int section, Qt::Orientation orientation, int ro
 		case COLUMN_DATE:
 			return tr("Date");
 		case COLUMN_YEARENABLED:
-			return tr("Year");
+			return tr("Has Year");
 		case COLUMN_COMMENT:
 			return tr("Comment");
 		case COLUMN_DAYSLEFT:

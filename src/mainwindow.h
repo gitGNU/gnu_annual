@@ -27,6 +27,8 @@ class QUndoStack;
 class QSettings;
 class QSortFilterProxyModel;
 class TableView;
+class QToolBar;
+class QTabWidget;
 
 class MainWindow:public QMainWindow
 {
@@ -43,6 +45,7 @@ class MainWindow:public QMainWindow
 	void OnShowUndoView();
 	void OnShowCardInserter();
 	void OnAboutDialog();
+	void OnCurrentChanged(int);
   protected:
 	virtual void closeEvent(QCloseEvent * event);
   private:
@@ -51,6 +54,8 @@ class MainWindow:public QMainWindow
 	QSortFilterProxyModel *proxyModel;
 	TableModel *model;
 	QSettings *settings;
+	QToolBar *toolbar;
+	QTabWidget *tabwidget;
 
 
 	QDockWidget *undoviewDockWidget;

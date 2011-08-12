@@ -1,0 +1,38 @@
+pkgname=annual-git
+_pkgname=annual
+pkgver=20110809
+pkgrel=1
+pkgdesc='Reminds for annual events like birthdays, holidays, etc.'
+arch=('i686' 'x86_64')
+url='http://developer.berlios.de/projects/annual/'
+license=('GPL3')
+depends=('qt>=4.6', 'perl-xml-xpath')
+options=('strip')
+
+#install="$pkgname.install"
+#source=($pkgname)
+
+_gitroot="git://git.berlios.de/$_pkgname"
+_gitname="$_pkgname"
+
+build() {
+    cd ${srcdir}
+
+	msg "Connecting to GIT server...."
+	if [ -d $_gitname ] ; then
+		cd $_gitname && git pull origin
+		msg "The local files are updated."
+	else
+		git clone $_gitroot $_gitname
+	fi
+	msg "GIT checkout done or server timeout"
+	msg "Starting make..."
+	cd "$srcdir/$_gitname"
+	cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=RelWithDebInfo .
+	make 
+}
+
+package() {
+	cd "$srcdir/$_gitname"
+	make DESTDIR=$pkgdir install
+}
