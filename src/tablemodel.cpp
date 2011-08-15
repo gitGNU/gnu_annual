@@ -202,7 +202,6 @@ Qt::ItemFlags TableModel::flags(const QModelIndex & index) const
 
 }
 
-#include <QDebug>
 #include <QBuffer>
 #include <QMessageBox>
 QStringList TableModel::mimeTypes() const 

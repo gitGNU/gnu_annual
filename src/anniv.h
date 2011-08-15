@@ -19,32 +19,32 @@
 #define ANNIV_H
 
 #include <QIcon>
-#include <QList>
-class QStringList;
 
 class Anniv
 {
-
-  private:
-	Anniv();
-	QList < QIcon > icons;
-	QStringList types;
-	QString longformat, shortformat;
-
   public:
 
 	enum Type
 	{
 		ANNIVERSARY = 0,
 		BIRTHDAY,
-		WEDDING,
-		EVENT,
-		MEMORIAL,
-		HOLIDAY,
 		DEATHDAY,
+		EVENT,
+		HOLIDAY,
+		MEMORIAL,
+		WEDDING,
 		NAMESDAY,
 		ANNIV_INVALID
 	};
+
+  private:
+	Anniv();
+	QIcon icons[ANNIV_INVALID];
+	QString types[ANNIV_INVALID];
+	
+	QString longformat, shortformat;
+
+  public:
 
 	static const Anniv & instance()
 	{
@@ -58,7 +58,7 @@ class Anniv
 		return icons[type];
 
 	}
-	const QString & getString(Type type) const
+	const QString& getString(Type type) const
 	{
 		if (type >= ANNIV_INVALID)
 			return types[ANNIV_INVALID];
@@ -66,32 +66,7 @@ class Anniv
 	}
 
 
-	static Type getType(QString str)
-	{
-		if (str.length() == 0)
-			return ANNIV_INVALID;
-		switch (str.toUpper().at(0).unicode())
-		{
-		case 'A':
-			return ANNIVERSARY;
-		case 'B':
-			return BIRTHDAY;
-		case 'D':
-			return DEATHDAY;
-		case 'E':
-			return EVENT;
-		case 'H':
-			return HOLIDAY;
-		case 'M':
-			return MEMORIAL;
-		case 'W':
-			return WEDDING;
-		case 'N':
-			return NAMESDAY;
-		default:
-			return ANNIV_INVALID;
-		}
-	}
+	static Type getType(QString str);
 	const QString & shortDateFormat() const
 	{
 		return shortformat;

@@ -18,31 +18,65 @@
 #include <QIcon>
 #include <QLocale>
 #include "anniv.h"
+
+
 Anniv::Anniv()
 {
-	icons.push_back(QIcon(":/icons/anniversary.png"));
-	icons.push_back(QIcon(":/icons/birthday.png"));
-	icons.push_back(QIcon(":/icons/deathday.png"));
-	icons.push_back(QIcon(":/icons/event.png"));
-	icons.push_back(QIcon(":/icons/holiday.png"));
-	icons.push_back(QIcon(":/icons/memorial.png"));
-	icons.push_back(QIcon(":/icons/wedding.png"));
-	icons.push_back(QIcon(":/icons/namesday.png"));
-	icons.push_back(QIcon());
 
-	types.push_back(QObject::tr("anniversary"));
-	types.push_back(QObject::tr("birthday"));
-	types.push_back(QObject::tr("death"));
-	types.push_back(QObject::tr("event"));
-	types.push_back(QObject::tr("holiday"));
-	types.push_back(QObject::tr("memorial"));
-	types.push_back(QObject::tr("wedding"));
-	types.push_back(QObject::tr("namesday"));
-	types.push_back(QObject::tr("invalid"));
+	{
+		int i=0;
+		icons[i++] = QIcon(":/icons/anniversary.png");
+		icons[i++] = QIcon(":/icons/birthday.png");
+		icons[i++] = QIcon(":/icons/deathday.png");
+		icons[i++] = QIcon(":/icons/event.png");
+		icons[i++] = QIcon(":/icons/holiday.png");
+		icons[i++] = QIcon(":/icons/memorial.png");
+		icons[i++] = QIcon(":/icons/wedding.png");
+		icons[i++] = QIcon(":/icons/namesday.png");
+	}
+	{
+		int i=0;
+		types[i++] = QObject::tr("anniversary"); 
+		types[i++] = QObject::tr("birthday");
+		types[i++] = QObject::tr("death");
+		types[i++] = QObject::tr("event");
+		types[i++] = QObject::tr("holiday");
+		types[i++] = QObject::tr("memorial");
+		types[i++] = QObject::tr("wedding");
+		types[i++] = QObject::tr("namesday");
+		types[i++] = QObject::tr("invalid");
+	}
 
 	longformat = QLocale::system().dateFormat(QLocale::ShortFormat);
 	if (longformat.count('y') == 2)
 		longformat.replace("yy", "yyyy");
 	shortformat = longformat;
 	shortformat.remove(QRegExp("[/\\.]?y+[/\\.]?"));
+}
+
+Anniv::Type Anniv::getType(QString str)
+{
+	if (str.length() == 0)
+		return ANNIV_INVALID;
+	switch (str.toUpper().at(0).unicode())
+	{
+	case 'A':
+		return ANNIVERSARY;
+	case 'B':
+		return BIRTHDAY;
+	case 'D':
+		return DEATHDAY;
+	case 'E':
+		return EVENT;
+	case 'H':
+		return HOLIDAY;
+	case 'M':
+		return MEMORIAL;
+	case 'W':
+		return WEDDING;
+	case 'N':
+		return NAMESDAY;
+	default:
+		return ANNIV_INVALID;
+	}
 }

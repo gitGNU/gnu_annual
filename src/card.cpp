@@ -101,18 +101,18 @@ static char getDateSep(QString str)
 Card *readCard(QString line)
 {
 	QStringList col = readCSV(line);
-	if (col.isEmpty())
+	if(col.isEmpty())
 		return (Card *) 0;
-	if (col.length() < 3)
+	if(col.length() < 3)
 		throw IOException(QObject::tr("The line `%1` is incomplete").arg(col.join("*")));
 	Anniv::Type type = Anniv::getType(col[0]);
-	if (type == Anniv::ANNIV_INVALID)
+	if(type == Anniv::ANNIV_INVALID)
 		throw IOException(QObject::tr("Invalid type %1").arg(col[0]));
 
 	const char datumsep = getDateSep(col[1]);
 	QStringList datum = col[1].split(datumsep);
 	QDate *date;
-	if (datum.size() < 2)
+	if(datum.size() < 2)
 		throw IOException(QObject::tr("The date %1 is invalid!").arg(col[1]));
 	bool hasYear;
 	if (datum.length() == 3)

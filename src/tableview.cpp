@@ -25,4 +25,3 @@ TableView::TableView(QWidget* parent)
     setDropIndicatorShown(true);
 }
 
-#include <QDebug>
