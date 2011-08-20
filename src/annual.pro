@@ -3,7 +3,7 @@
 # -------------------------------------------------
 TARGET = annual
 TEMPLATE = app
-CONFIG += qt release warn_on
+#CONFIG += qt release warn_on
 
 SOURCES += \
 aboutdialog.cpp  card.cpp          listdelegate.cpp  main_cli.cpp  mainwindow.cpp      tabledelegate.cpp  tableview.cpp    wizardpages.cpp \
