@@ -81,7 +81,7 @@
     </message>
     <message>
         <location filename="../wizardpages.cpp" line="39"/>
-        <source>This wizard helps you to setup %1. Please follow the next pages to successfully setup %1.</source>
+        <source>This wizard helps you to setup %1. Please follow the following pages to successfully setup %1.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -94,7 +94,7 @@
     </message>
     <message>
         <location filename="../wizardpages.cpp" line="51"/>
-        <source>Please read the following license and apply to it to proceed.</source>
+        <source>Please read the following license and apply to proceed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -115,19 +115,121 @@
 </context>
 <context>
     <name>ListModel</name>
+    <message numerus="yes">
+        <location filename="../listmodel.cpp" line="103"/>
+        <location filename="../listmodel.cpp" line="113"/>
+        <source>In %n day(s) is %1, exactly at %2.</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../listmodel.cpp" line="105"/>
+        <source>In %n day(s) %1 has birthday, exactly at %2.</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../listmodel.cpp" line="107"/>
+        <source>In %n day(s) %1 died, exactly at %2.</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../listmodel.cpp" line="109"/>
+        <source>In %n day(s) %1 has namesday, exactly at %2.</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../listmodel.cpp" line="111"/>
+        <source>In %n day(s) is %1 %3th wedding day, exactly at %2.</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../listmodel.cpp" line="122"/>
+        <source>In %n day(s) %1 becomes %3, %1 was born on %2.</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../listmodel.cpp" line="124"/>
+        <location filename="../listmodel.cpp" line="132"/>
+        <source>In %n day(s) is %1 for the %3th time. This day originated on %2.</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../listmodel.cpp" line="126"/>
+        <source>In %n day(s) %1 is dead for %3 years. %1 died on %3.</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../listmodel.cpp" line="128"/>
+        <source>In %n day(s) %1 has namesday. This day originated on %2, thus is %3 ages old.</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../listmodel.cpp" line="130"/>
+        <source>In %n day(s) is %1 %3th wedding day. %1 is married since %2.</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
     <message>
-        <location filename="../listmodel.cpp" line="151"/>
+        <location filename="../listmodel.cpp" line="164"/>
         <source>dddd, d MMMM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../listmodel.cpp" line="173"/>
+        <location filename="../listmodel.cpp" line="187"/>
         <source>Reminders</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
+    <message>
+        <location filename="../mainwindow.cpp" line="80"/>
+        <source>Database not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="81"/>
+        <source>The database `%1` cannot be opened. Please proceed the steps of the wizard again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="84"/>
+        <source>Wizard cancelled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="84"/>
+        <source>You have not completed the wizard. The program will exit now.</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <location filename="../mainwindow.cpp" line="114"/>
         <source>Database error</source>
@@ -140,7 +242,7 @@
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="150"/>
-        <location filename="../mainwindow.cpp" line="226"/>
+        <location filename="../mainwindow.cpp" line="228"/>
         <source>Undo List</source>
         <translation type="unfinished"></translation>
     </message>
@@ -160,207 +262,207 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="180"/>
+        <location filename="../mainwindow.cpp" line="182"/>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="182"/>
+        <location filename="../mainwindow.cpp" line="184"/>
         <source>Ctrl+S</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="183"/>
+        <location filename="../mainwindow.cpp" line="185"/>
         <source>Save database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="184"/>
-        <source>Save changes to the database file.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="188"/>
-        <source>Config</source>
+        <location filename="../mainwindow.cpp" line="186"/>
+        <source>Save changes to database file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="190"/>
-        <source>Ctrl+C</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="191"/>
-        <source>Edit Configuration</source>
+        <source>Config</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="192"/>
-        <source>Opens a configuration dialog for editing preferences.</source>
+        <source>Ctrl+C</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="195"/>
-        <source>Remove</source>
+        <location filename="../mainwindow.cpp" line="193"/>
+        <source>Edit Configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="194"/>
+        <source>Opens a configuration dialog to edit preferences.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="197"/>
-        <source>Ctrl+X</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="198"/>
-        <source>Remove Entries</source>
+        <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="199"/>
-        <source>Removes the selected rows of the table.</source>
+        <source>Ctrl+X</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="203"/>
-        <source>Ctrl+Z</source>
+        <location filename="../mainwindow.cpp" line="200"/>
+        <source>Remove Entries</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="204"/>
-        <source>Undo change</source>
+        <location filename="../mainwindow.cpp" line="201"/>
+        <source>Removes the selected rows from the table.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="205"/>
-        <source>Undo the last change committed to the table.</source>
+        <source>Ctrl+Z</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="209"/>
-        <source>Ctrl+Y</source>
+        <location filename="../mainwindow.cpp" line="206"/>
+        <source>Undo change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="210"/>
-        <source>Redo change</source>
+        <location filename="../mainwindow.cpp" line="207"/>
+        <source>Undo the last change of the table.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="211"/>
-        <source>Redo the last undone change committed to the table.</source>
+        <source>Ctrl+Y</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="212"/>
+        <source>Redo change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="213"/>
-        <source>E&amp;xit</source>
+        <source>Redo the last undone change of the table.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="215"/>
-        <source>Ctrl+Q</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="216"/>
-        <source>Close Application</source>
+        <source>E&amp;xit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="217"/>
+        <source>Ctrl+Q</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="218"/>
+        <source>Close Application</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="219"/>
         <source>Closes this window.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="222"/>
+        <location filename="../mainwindow.cpp" line="224"/>
         <source>Item Creator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="224"/>
+        <location filename="../mainwindow.cpp" line="226"/>
         <source>Show Insertion-Box</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="225"/>
+        <location filename="../mainwindow.cpp" line="227"/>
         <source>Pops-up a docked widget providing help for creating new entries.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="228"/>
+        <location filename="../mainwindow.cpp" line="230"/>
         <source>Show Undo-List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="229"/>
-        <source>Pops-up a docked widget providing a list of done changes to the table.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../mainwindow.cpp" line="231"/>
-        <source>About</source>
+        <source>Pops-up a docked widget providing a list of changes done to the table.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="233"/>
-        <source>Shows the About-Dialog</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="234"/>
-        <source>Information about the version and the contributors of this program.</source>
+        <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="235"/>
-        <source>About Qt</source>
+        <source>Shows the About-Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="236"/>
+        <source>Information about the version and the contributors of this program.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="237"/>
+        <source>About Qt</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="239"/>
         <source>About the Qt-framework</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="238"/>
+        <location filename="../mainwindow.cpp" line="240"/>
         <source>Get information regarding the programming framework Qt which is used by this application.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="242"/>
+        <location filename="../mainwindow.cpp" line="244"/>
         <source>&amp;File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="247"/>
+        <location filename="../mainwindow.cpp" line="249"/>
         <source>&amp;Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="252"/>
+        <location filename="../mainwindow.cpp" line="254"/>
         <source>&amp;Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="255"/>
+        <location filename="../mainwindow.cpp" line="257"/>
         <source>&amp;Window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="259"/>
+        <location filename="../mainwindow.cpp" line="261"/>
         <source>&amp;Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="272"/>
+        <location filename="../mainwindow.cpp" line="274"/>
         <source>Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="319"/>
+        <location filename="../mainwindow.cpp" line="337"/>
         <source>The document has been modified.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="319"/>
+        <location filename="../mainwindow.cpp" line="337"/>
         <source>There are unsaved changes. Do you want to save your changes?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -368,47 +470,47 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../anniv.cpp" line="33"/>
+        <location filename="../anniv.cpp" line="39"/>
         <source>anniversary</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../anniv.cpp" line="34"/>
+        <location filename="../anniv.cpp" line="40"/>
         <source>birthday</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../anniv.cpp" line="35"/>
+        <location filename="../anniv.cpp" line="41"/>
         <source>death</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../anniv.cpp" line="36"/>
+        <location filename="../anniv.cpp" line="42"/>
         <source>event</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../anniv.cpp" line="37"/>
+        <location filename="../anniv.cpp" line="43"/>
         <source>holiday</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../anniv.cpp" line="38"/>
+        <location filename="../anniv.cpp" line="44"/>
         <source>memorial</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../anniv.cpp" line="39"/>
+        <location filename="../anniv.cpp" line="45"/>
         <source>wedding</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../anniv.cpp" line="40"/>
+        <location filename="../anniv.cpp" line="46"/>
         <source>namesday</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../anniv.cpp" line="41"/>
+        <location filename="../anniv.cpp" line="47"/>
         <source>invalid</source>
         <translation type="unfinished"></translation>
     </message>
@@ -428,62 +530,6 @@
         <location filename="../card.cpp" line="133"/>
         <source>The date %1 is invalid!</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../listmodel.cpp" line="97"/>
-        <source>In %n day(s) %1 has birthday, exactly at %2.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../listmodel.cpp" line="99"/>
-        <source>In %n day(s) %1 died, exactly at %2.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../listmodel.cpp" line="101"/>
-        <source>In %n day(s) it&apos;s %1 memorial, exactly at %2.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../listmodel.cpp" line="103"/>
-        <source>In %n day(s) is %1, exactly at %2.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../listmodel.cpp" line="113"/>
-        <source>In %n day(s) %2 has the %1th birthday, exactly at %3.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../listmodel.cpp" line="116"/>
-        <source>In %n day(s) %2 died for %1 years, exactly at %3.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../listmodel.cpp" line="119"/>
-        <source> (%3 year(s))</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
     </message>
     <message>
         <location filename="../main.cpp" line="48"/>
@@ -507,7 +553,7 @@
     </message>
     <message>
         <location filename="../main.cpp" line="56"/>
-        <source>Don&apos;t popup a window if there&apos;s nothing to remind</source>
+        <source>Only popup a window if there is something to remind me of</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -526,23 +572,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="80"/>
-        <source>Database not found</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="81"/>
-        <source>The database `%1` cannot be opened. Please proceed again the steps of the wizard.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="84"/>
         <location filename="../mainwindow.cpp" line="100"/>
         <source>Wizard cancelled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="85"/>
         <location filename="../mainwindow.cpp" line="101"/>
         <source>You have not completed the wizard. The program will exit now.</source>
         <translation type="unfinished"></translation>
@@ -589,12 +623,12 @@
     </message>
     <message>
         <location filename="../settingsdialog.cpp" line="49"/>
-        <source>Select the color in which a date is displayed whenever it is characterized as a warning.</source>
+        <source>Select the color of dates which are displayed as warnings.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settingsdialog.cpp" line="50"/>
-        <source>Select the color in which a date is displayed whenever it is characterized as a critical.</source>
+        <source>Select the color of dates which are displayed as critical.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -609,7 +643,7 @@
     </message>
     <message>
         <location filename="../settingsdialog.cpp" line="55"/>
-        <source>You can use any database provided by a file which is encoded in the comma separated file format (CSV).</source>
+        <source>You can use any database provided by a file which is encoded in the &apos;comma-separated file format&apos; (CSV).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -634,12 +668,12 @@
     </message>
     <message>
         <location filename="../settingsdialog.cpp" line="117"/>
-        <source>Could not open file &apos;%1&apos; for reading</source>
+        <source>Could not read file &apos;%1&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settingsdialog.cpp" line="126"/>
-        <source>Error while reading file %1</source>
+        <source>Error while reading file &apos;%1&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -656,57 +690,52 @@
 <context>
     <name>TableModel</name>
     <message>
-        <location filename="../tablemodel.cpp" line="52"/>
-        <source>(null)</source>
+        <location filename="../tablemodel.cpp" line="69"/>
+        <source>yes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tablemodel.cpp" line="70"/>
-        <source>with</source>
+        <location filename="../tablemodel.cpp" line="69"/>
+        <source>no</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tablemodel.cpp" line="70"/>
-        <source>without</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../tablemodel.cpp" line="94"/>
+        <location filename="../tablemodel.cpp" line="93"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tablemodel.cpp" line="96"/>
+        <location filename="../tablemodel.cpp" line="95"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tablemodel.cpp" line="98"/>
+        <location filename="../tablemodel.cpp" line="97"/>
         <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tablemodel.cpp" line="100"/>
-        <source>Year</source>
+        <location filename="../tablemodel.cpp" line="99"/>
+        <source>Has Year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tablemodel.cpp" line="102"/>
+        <location filename="../tablemodel.cpp" line="101"/>
         <source>Comment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tablemodel.cpp" line="104"/>
+        <location filename="../tablemodel.cpp" line="103"/>
         <source>Days left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tablemodel.cpp" line="238"/>
+        <location filename="../tablemodel.cpp" line="236"/>
         <source>Cannot drop data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tablemodel.cpp" line="239"/>
+        <location filename="../tablemodel.cpp" line="237"/>
         <source>Your drop-action cannot be accomplished, because your data is erroneous.
 Tranformation caused the error: %1</source>
         <translation type="unfinished"></translation>
@@ -748,12 +777,12 @@ Tranformation caused the error: %1</source>
     </message>
     <message>
         <location filename="../wizardpages.cpp" line="118"/>
-        <source>Could not open file &apos;%1&apos; for writing.</source>
+        <source>Could not write file &apos;%1&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../wizardpages.cpp" line="136"/>
-        <source>Could not open file &apos;%1&apos; for reading</source>
+        <source>Could not read file &apos;%1&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

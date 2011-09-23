@@ -36,7 +36,7 @@ IntroductionPage::IntroductionPage(QWidget* parent)
 {
 	setTitle(tr("Setting up %1").arg(APPLICATION_NAME));
 
-	QLabel *label = new QLabel(tr("This wizard helps you to setup %1. Please follow the next pages to successfully setup %1.").arg(APPLICATION_NAME));
+	QLabel *label = new QLabel(tr("This wizard helps you to setup %1. Please follow the following pages to successfully setup %1.").arg(APPLICATION_NAME));
 	label->setWordWrap(true);
 
 	QVBoxLayout *layout = new QVBoxLayout;
@@ -48,7 +48,7 @@ LicensePage::LicensePage(QWidget* parent)
 	: QWizardPage(parent), textbrowser(new QTextBrowser(this))
 {
 	setTitle(tr("Accept License"));
-	setSubTitle(tr("Please read the following license and apply to it to proceed."));
+	setSubTitle(tr("Please read the following license and apply to proceed."));
 
 
 	QString res(":/COPYING");
@@ -115,7 +115,7 @@ void WizardFilePage::newClicked()
 	QFile file(str);
 	if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
 	{
-		QMessageBox::critical(this, tr("File Error"), tr("Could not open file '%1' for writing.").arg(str));
+		QMessageBox::critical(this, tr("File Error"), tr("Could not write file '%1'.").arg(str));
 		return;
 	}
 	QTextStream stream(&file);
@@ -133,7 +133,7 @@ void WizardFilePage::existingClicked()
 	QFile file(str);
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
 	{
-		QMessageBox::critical(this, tr("File Error"), tr("Could not open file '%1' for reading").arg(str));
+		QMessageBox::critical(this, tr("File Error"), tr("Could not read file '%1'.").arg(str));
 		return;
 	}
 	try

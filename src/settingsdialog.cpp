@@ -46,13 +46,13 @@ SettingsDialog::SettingsDialog(QSettings * _settings)
 	criticalDays->setRange(-1, 60);
 	warningDays->setRange(-1, 60);
 
-	warningButton->setToolTip(tr("Select the color in which a date is displayed whenever it is characterized as a warning."));
-	criticalButton->setToolTip(tr("Select the color in which a date is displayed whenever it is characterized as a critical."));
+	warningButton->setToolTip(tr("Select the color of dates which are displayed as warnings."));
+	criticalButton->setToolTip(tr("Select the color of dates which are displayed as critical."));
 
 	criticalDays->setToolTip(tr("Select the dayspan in which a day is considered as critical. The dayspan is the difference in days between today and one date."));
 	warningDays->setToolTip(tr("Select the dayspan in which a day is considered as warning. The dayspan is the difference in days between today and one date."));
 
-	selectFile->setToolTip(tr("You can use any database provided by a file which is encoded in the comma separated file format (CSV)."));
+	selectFile->setToolTip(tr("You can use any database provided by a file which is encoded in the 'comma-separated file format' (CSV)."));
 	selectFile->setWhatsThis(tr("Select file to use as database"));
 
 	criticalDays->setValue(settings->value("criticalDays").toInt());
@@ -114,7 +114,7 @@ void SettingsDialog::selectFileSlot()
 	QFile file(str);
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
 	{
-		QMessageBox::critical(this, tr("File Error"), tr("Could not open file '%1' for reading").  arg(str));
+		QMessageBox::critical(this, tr("File Error"), tr("Could not read file '%1'.").  arg(str));
 		return;
 	}
 	try
@@ -123,7 +123,7 @@ void SettingsDialog::selectFileSlot()
 	}
 	catch(const IOException & e)
 	{
-		QMessageBox::critical(this, tr("Error while reading file %1").arg(str), e);
+		QMessageBox::critical(this, tr("Error while reading file '%1'.").arg(str), e);
 		return;
 	}
 

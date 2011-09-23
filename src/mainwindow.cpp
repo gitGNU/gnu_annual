@@ -77,12 +77,11 @@ QMainWindow(parent), settings(new QSettings(this))
 		if (!f.exists() || !f.open(QIODevice::ReadOnly | QIODevice::Text)
 			|| !f.isReadable())
 		{
-			QMessageBox::critical(this, QObject::tr("Database not found"), 
-					QObject::tr("The database `%1` cannot be opened. Please proceed again the steps of the wizard.").arg(settings->value("file").toString()));
+			QMessageBox::critical(this, tr("Database not found"), 
+					tr("The database `%1` cannot be opened. Please proceed the steps of the wizard again.").arg(settings->value("file").toString()));
 			if (!useWizard(this, settings))
 			{
-				QMessageBox::critical(this, QObject::tr("Wizard cancelled"),
-									  QObject::tr("You have not completed the wizard. The program will exit now."));
+				QMessageBox::critical(this, tr("Wizard cancelled"), tr("You have not completed the wizard. The program will exit now."));
 				throw(1);
 			}
 		}
@@ -184,7 +183,7 @@ QMainWindow(parent), settings(new QSettings(this))
 	connect(save, SIGNAL(triggered()), this, SLOT(save()));
 	save->setShortcut(tr("Ctrl+S"));
 	save->setStatusTip(tr("Save database"));
-	save->setWhatsThis(tr("Save changes to the database file."));
+	save->setWhatsThis(tr("Save changes to database file."));
 
 
 
@@ -192,26 +191,26 @@ QMainWindow(parent), settings(new QSettings(this))
 	connect(config, SIGNAL(triggered()), this, SLOT(launchConfig()));
 	config->setShortcut(tr("Ctrl+C"));
 	config->setStatusTip(tr("Edit Configuration"));
-	config->setWhatsThis(tr("Opens a configuration dialog for editing preferences."));
+	config->setWhatsThis(tr("Opens a configuration dialog to edit preferences."));
 
 
 	QAction *remove = new QAction(QIcon::fromTheme("edit-delete", style()->standardIcon(QStyle::SP_TrashIcon)), tr("Remove"), this);
 	connect(remove, SIGNAL(triggered()), this, SLOT(removeSelected()));
 	remove->setShortcut(tr("Ctrl+X"));
 	remove->setStatusTip(tr("Remove Entries"));
-	remove->setWhatsThis(tr("Removes the selected rows of the table."));
+	remove->setWhatsThis(tr("Removes the selected rows from the table."));
 
 	QAction *undo = undostack->createUndoAction(this);
 	undo->setIcon(QIcon::fromTheme("edit-undo", style()->standardIcon(QStyle::SP_ArrowBack)));
 	undo->setShortcut(tr("Ctrl+Z"));
 	undo->setStatusTip(tr("Undo change"));
-	undo->setWhatsThis(tr("Undo the last change committed to the table."));
+	undo->setWhatsThis(tr("Undo the last change of the table."));
 
 	QAction *redo = undostack->createRedoAction(this);
 	redo->setIcon(QIcon::fromTheme("edit-redo", style()->standardIcon(QStyle::SP_ArrowForward)));
 	redo->setShortcut(tr("Ctrl+Y"));
 	redo->setStatusTip(tr("Redo change"));
-	redo->setWhatsThis(tr("Redo the last undone change committed to the table."));
+	redo->setWhatsThis(tr("Redo the last undone change of the table."));
 
 	QAction *close = new QAction(style()->standardIcon(QStyle::SP_TitleBarCloseButton), tr("E&xit"), this);
 	connect(close, SIGNAL(triggered()), this, SLOT(close()));
@@ -229,7 +228,7 @@ QMainWindow(parent), settings(new QSettings(this))
 	QAction *showUndoView = new QAction(tr("Undo List"), this);
 	connect(showUndoView, SIGNAL(triggered()), this, SLOT(OnShowUndoView()));
 	showUndoView->setStatusTip(tr("Show Undo-List"));
-	showUndoView->setWhatsThis(tr("Pops-up a docked widget providing a list of done changes to the table."));
+	showUndoView->setWhatsThis(tr("Pops-up a docked widget providing a list of changes done to the table."));
 
 	QAction *aboutAction = new QAction(QIcon::fromTheme("help-about"), tr("About"), this);
 	connect(aboutAction, SIGNAL(triggered()), this, SLOT(OnAboutDialog()));

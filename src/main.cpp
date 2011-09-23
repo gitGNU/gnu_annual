@@ -53,7 +53,7 @@ static void showHelp()
 		QObject::
 		tr("Do not use graphical interface - just output to console") << endl
 		<< "  -q\t\t" << QObject::
-		tr("Don't popup a window if there's nothing to remind") << endl;
+		tr("Only popup a window if there is something to remind me of") << endl;
 }
 
 int main(int argc, char *argv[])	// TODO: -v -> version!

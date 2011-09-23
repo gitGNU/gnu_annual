@@ -233,10 +233,8 @@ bool TableModel::dropMimeData(const QMimeData * data, Qt::DropAction action, int
 	}
 	catch(const IOException & e)
 	{
-		QMessageBox::critical(0, tr("Cannot drop data"),
-							  tr
-							  ("Your drop-action cannot be accomplished, because your data is erroneous.\nTranformation caused the error: %1").
-							  arg(e.message()));
+		QMessageBox::critical(0, tr("Cannot drop data"), 
+					tr("Your drop-action cannot be accomplished, because your data is erroneous.\nTranformation caused the error: %1").arg(e.message()));
 
 	}
 
