@@ -119,17 +119,17 @@ static QString formatCommentWithYear(Anniv::Type type, int daysleft)
 	switch (type)
 	{
 	case Anniv::BIRTHDAY:
-		return ListModel::tr("In %n day(s) %1 becomes %3, %1 was born on %2.", "", daysleft);
+		return ListModel::tr("In %n day(s) at %4 %1 becomes %3, %1 was born on %2.", "", daysleft);
 	case Anniv::ANNIVERSARY:
-		return ListModel::tr("In %n day(s) is %1 for the %3th time. This day originated on %2.","", daysleft);
+		return ListModel::tr("In %n day(s) at %4 is %1 for the %3th time. This day originated on %2.","", daysleft);
 	case Anniv::DEATHDAY:
-		return ListModel::tr("In %n day(s) %1 is dead for %3 years. %1 died on %3.", "", daysleft);
+		return ListModel::tr("In %n day(s) at %4 %1 is dead for %3 years. %1 died on %3.", "", daysleft);
 	case Anniv::NAMESDAY:
-		return ListModel::tr("In %n day(s) %1 has namesday. This day originated on %2, thus is %3 ages old.", "", daysleft);
+		return ListModel::tr("In %n day(s) at %4 %1 has namesday. This day originated on %2, thus is %3 ages old.", "", daysleft);
 	case Anniv::WEDDING:
-		return ListModel::tr("In %n day(s) is %1 %3th wedding day. %1 is married since %2.", "", daysleft);
+		return ListModel::tr("In %n day(s) at %4 is %1 %3th wedding day. %1 is married since %2.", "", daysleft);
 	default:
-		return ListModel::tr("In %n day(s) is %1 for the %3th time. This day originated on %2.", "", daysleft);
+		return ListModel::tr("In %n day(s) at %4 is %1 for the %3th time. This day originated on %2.", "", daysleft);
 	}
 }
 
@@ -155,14 +155,24 @@ QVariant ListModel::data(const QModelIndex & index, int role) const
 		int daysleft = model->data(model->index(row, TableModel::COLUMN_DAYSLEFT)).toInt();
 
 
-		if (hasYear)
-			format = formatCommentWithYear(type, daysleft);
-		else
-			format = formatComment(type, daysleft);
+		QDate dateNow(QDate::currentDate().year(), date.month(), date.day());
 
-		format = format.arg(model->data(model->index(row, TableModel::COLUMN_NAME)).toString())
-						.arg(hasYear ? date.toString(Qt::SystemLocaleLongDate) : date. toString(tr("dddd, d MMMM")));
-		if(hasYear) format = format.arg(QDate::currentDate().year() - date.year());
+		if(!hasYear)
+		{
+			format = formatComment(type, daysleft).arg(model->data(model->index(row, TableModel::COLUMN_NAME)).toString())
+												  .arg(dateNow.toString(tr("dddd, d MMMM")));
+		}
+		else
+		{
+			format = formatCommentWithYear(type, daysleft);
+			format = format.arg(model->data(model->index(row, TableModel::COLUMN_NAME)).toString())
+						   .arg(date.toString(tr("dddd, d MMMM")))
+						   .arg(dateNow.year() - date.year())
+						   .arg(dateNow.toString(tr("dddd")));
+		}
+
+//						.arg(hasYear ? date.toString(Qt::SystemLocaleLongDate) : date. toString(tr("dddd, d MMMM")));
+//		if(hasYear) format = format.arg(QDate::currentDate().year() - date.year());
 
 		return format;
 
