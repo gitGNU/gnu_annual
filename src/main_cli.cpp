@@ -51,7 +51,7 @@ int main_cli()
 	if (!f.exists() || !f.open(QIODevice::ReadOnly | QIODevice::Text)
 		|| !f.isReadable())
 	{
-		cerr << QObject::tr("Database ´%1´ not found").arg(filename);
+		cerr << QObject::tr("Database '%1' not found").arg(filename);
 		return EXIT_FAILURE;
 	}
 

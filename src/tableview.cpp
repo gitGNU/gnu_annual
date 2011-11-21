@@ -17,11 +17,21 @@
  */
 #include "tableview.h"
 #include <QUndoStack>
-TableView::TableView(QWidget* parent) 
-	: QTableView(parent)
+#include <QMenu>
+#include <QContextMenuEvent>
+#include "mainwindow.h"
+TableView::TableView(MainWindow* parent)
+        : QTableView(parent), mainwindow(parent)
 {
     setAcceptDrops(true);
     setDragDropMode(QAbstractItemView::DropOnly);
     setDropIndicatorShown(true);
 }
 
+void TableView::contextMenuEvent(QContextMenuEvent * event)
+{
+    QMenu menu;
+    menu.addAction(mainwindow->getRemoveAction());
+    menu.exec(event->globalPos());
+
+}

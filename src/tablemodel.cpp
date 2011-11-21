@@ -40,9 +40,8 @@ QVariant TableModel::data(const QModelIndex & index, int role) const
 	if (!index.isValid())
 		return QVariant();
 
-	if (index.row() < cards.size() && role == Qt::CheckStateRole
-		&& index.column() == COLUMN_YEARENABLED)
-		return cards.at(index.row()).hasYear()? Qt::Checked : Qt::Unchecked;
+	if (index.row() < cards.size() && role == Qt::CheckStateRole && index.column() == COLUMN_YEARENABLED)
+		return cards.at(index.row()).hasYear() ? Qt::Checked : Qt::Unchecked;
 	if (role != Qt::DisplayRole && role != Qt::EditRole)
 		return QVariant();
 	if (index.row() == cards.size() && index.column() == COLUMN_DATE)
@@ -80,9 +79,8 @@ QVariant TableModel::headerData(int section, Qt::Orientation orientation, int ro
 {
 	if (section < 0)
 		return QVariant();
-	if (orientation == Qt::Vertical && role == Qt::DecorationRole
-		&& section < cards.size())
-		return Anniv::instance().getIcon(cards.at(section).type());
+        if (orientation == Qt::Vertical && role == Qt::DecorationRole && section < cards.size())
+                return Anniv::instance().getIcon(cards.at(section).type());
 	if (role != Qt::DisplayRole)
 		return QVariant();
 	if (orientation == Qt::Horizontal)
@@ -105,12 +103,13 @@ QVariant TableModel::headerData(int section, Qt::Orientation orientation, int ro
 			return QVariant();
 		}
 	}
-	else
+	return QVariant();
+/*	else
 	{
 		if (section >= cards.size())
 			return QVariant();
 		return cards.at(section).name();
-	}
+	}*/
 }
 
 bool TableModel::setData(int row, int column, const QVariant & value)
@@ -178,10 +177,7 @@ bool TableModel::setData(const QModelIndex & index, const QVariant & value, int 
 		emit commandInvoked(new AddCardCommand(this, newcard));
 	else
 if (cards[index.row()] != newcard)
-	emit commandInvoked(new
-						ChangeCardCommand(this, index.row(),
-										  static_cast < COLUMNS >
-										  (index.column()), newcard));
+	emit commandInvoked(new ChangeCardCommand(this, index.row(), static_cast < COLUMNS > (index.column()), newcard));
 	return true;
 }
 
@@ -233,7 +229,7 @@ bool TableModel::dropMimeData(const QMimeData * data, Qt::DropAction action, int
 	}
 	catch(const IOException & e)
 	{
-		QMessageBox::critical(0, tr("Cannot drop data"), 
+		QMessageBox::critical(0, tr("Cannot insert data"), 
 					tr("Your drop-action cannot be accomplished, because your data is erroneous.\nTranformation caused the error: %1").arg(e.message()));
 
 	}

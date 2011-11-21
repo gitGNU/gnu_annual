@@ -16,18 +16,25 @@
 # You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/2annual.pl.in" "${CMAKE_CURRENT_BINARY_DIR}/2annual" @ONLY)
+set(SOURCES 2annual.pod annual.pod)
 
-ADD_TEST(gmx ${CMAKE_CURRENT_SOURCE_DIR}/test.sh ${CMAKE_CURRENT_BINARY_DIR}/2annual 0)
-ADD_TEST(outlook ${CMAKE_CURRENT_SOURCE_DIR}/test.sh ${CMAKE_CURRENT_BINARY_DIR}/2annual 1)
-ADD_TEST(vcard ${CMAKE_CURRENT_SOURCE_DIR}/test.sh ${CMAKE_CURRENT_BINARY_DIR}/2annual 2)
+set(manfiles)
+foreach(file_pod ${SOURCES})
+  string(REPLACE ".pod" ".man" file_man ${file_pod})
+  set(file_man "${CMAKE_CURRENT_BINARY_DIR}/${file_man}")
+  add_custom_command(
+    OUTPUT ${file_man} 
+    COMMAND pod2man --date `stat --format=%y ${CMAKE_CURRENT_SOURCE_DIR}/${file_pod} | cut -b-10` --center "${APPLICATION_NAME} Documentation"  --release "${APPLICATION_NAME} v${APPLICATION_VERSION}" --section 1 ${CMAKE_CURRENT_SOURCE_DIR}/${file_pod} -o ${file_man}
+    DEPENDS ${file_pod}
+  ) 
+  list(APPEND manfiles ${file_man})
+endforeach()
 
-ADD_CUSTOM_TARGET(perl ALL
-  DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/2annual
+ADD_CUSTOM_TARGET(doc ALL
+  DEPENDS ${manfiles}
 )
 
 INSTALL(
-	FILES ${CMAKE_CURRENT_BINARY_DIR}/2annual 
-	DESTINATION bin
+ FILES ${manfiles}
+ DESTINATION share/man/man1
 )
-

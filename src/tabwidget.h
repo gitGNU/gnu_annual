@@ -15,23 +15,48 @@
  * You should have received a copy of the GNU General Public License along
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef TABLEVIEW_H
-#define TABLEVIEW_H
+#ifndef TABWIDGET_H
+#define TABWIDGET_H
+#include <QWidget>
+class QTabBar;
+class QStackedLayout;
+class QFrame;
+class QSettings;
+class QStringList;
 
-#include <QTableView>
-class MainWindow;
-
-class TableView : public QTableView
+class TabWidget : public QWidget
 {
-public:
-    TableView(MainWindow* parent = 0);
-    QModelIndexList selectedIndexes () const 
-	{ 
-		return QTableView::selectedIndexes(); 
-	}
-    void contextMenuEvent ( QContextMenuEvent * event );
+    Q_OBJECT
 private:
-    MainWindow* mainwindow;
+    QTabBar* tabbar;
+    QStackedLayout* stackedlayout;
+    QFrame* frame;
+    QSettings* settings;
+    QStringList colorlist;
+    public:
+    TabWidget(QSettings* _settings, QWidget* parent = 0);
+    void addTab(QWidget *widget, const QIcon &icon, const QString &label, const QString& settingsname);
+    int currentIndex () const
+    {
+        return currentindex;
+    }
+protected:
+    void resizeEvent ( QResizeEvent * )
+    {
+        resizeTabbar();
+    }
+private:
+    int currentindex;
+    void resizeTabbar();
+
+public slots:
+    void setCurrentIndex(int index);
+signals:
+    void currentChanged(int);
 };
 
-#endif // TEXTTABLEVIEW_H
+
+
+
+
+#endif // TABWIDGET_H

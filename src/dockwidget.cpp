@@ -15,23 +15,23 @@
  * You should have received a copy of the GNU General Public License along
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef TABLEVIEW_H
-#define TABLEVIEW_H
+#include <QSettings>
+#include "dockwidget.h"
 
-#include <QTableView>
-class MainWindow;
-
-class TableView : public QTableView
+DockWidget::DockWidget(QSettings* _settings, const QString & _title, QWidget * parent, Qt::WindowFlags flags)
+    : QDockWidget(_title, parent, flags), settings(_settings), title(_title)
 {
-public:
-    TableView(MainWindow* parent = 0);
-    QModelIndexList selectedIndexes () const 
-	{ 
-		return QTableView::selectedIndexes(); 
-	}
-    void contextMenuEvent ( QContextMenuEvent * event );
-private:
-    MainWindow* mainwindow;
-};
+    QVariant geometry = settings->value(title + "/geometry");
+    if(!geometry.isNull())
+    {
+        setFloating(settings->value(title + "/floating", false).toBool());
+        restoreGeometry(geometry.toByteArray());
+    }
+}
 
-#endif // TEXTTABLEVIEW_H
+void DockWidget::closeEvent(QCloseEvent* )
+{
+    settings->setValue(title + "/geometry", saveGeometry());
+    settings->setValue(title + "/floating", isFloating());
+    emit windowClosed();
+}

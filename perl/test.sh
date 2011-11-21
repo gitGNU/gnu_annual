@@ -1,12 +1,22 @@
 #! /bin/sh
-# Tests conversion of gmx files
 #
-# Copyright (C) 2008-2009 Dominik Köppl
+# Tests conversion of various files with 2annual
+# part of annual - Reminder for annual events
+# Keeps track of all your anniversaries and hopefully reminds you at the right time.
+# Copyright (C) 2011 Dominik Köppl
 #
-# Copying and distribution of this file, with or without modification,
-# are permitted in any medium without royalty provided the copyright
-# notice and this notice are preserved.
-
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation, either version 3 of the License, or (at your option)
+# any later version.
+# 
+# This program is distributed in the hope that it will be useful, but WITHOUT 
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+# more details.
+# 
+# You should have received a copy of the GNU General Public License along
+# with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 if [[ $# -ne 2 ]]; then 
 	echo "Usage: $0 program test"
@@ -14,7 +24,7 @@ if [[ $# -ne 2 ]]; then
 fi
 
 program="$1"
-testpath='tests'
+testpath="`dirname $0`/tests"
 tmpfile=`mktemp`
 trap 'rm -fr $tmpfiles' 1 2 3 15
 
@@ -35,7 +45,7 @@ case $2 in
 	echo "Unknown parameter : $2"
 	exit 1
 esac
-./$program -i "$testpath/$infile" -o "$tmpfile"
+$program -i "$testpath/$infile" -o "$tmpfile"
 diff "$testpath/$checkfile" "$tmpfile"
 result=$?
 rm -fr $tmpfiles

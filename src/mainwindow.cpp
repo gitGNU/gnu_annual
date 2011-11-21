@@ -44,6 +44,8 @@
 #include "cardinserter.h"
 #include "settingsdialog.h"
 #include "tableview.h"
+#include "dockwidget.h"
+#include "tabwidget.h"
 
 static bool useWizard(QWidget* parent, QSettings * settings)
 {
@@ -67,6 +69,8 @@ static bool useWizard(QWidget* parent, QSettings * settings)
 #include <QStringListModel>
 #include <QMenu>
 #include <QMenuBar>
+
+
 MainWindow::MainWindow(QWidget * parent):
 QMainWindow(parent), settings(new QSettings(this))
 {
@@ -74,8 +78,7 @@ QMainWindow(parent), settings(new QSettings(this))
 	if (!settings->value("file").isNull())
 	{
 		QFile f(settings->value("file").toString(), this);
-		if (!f.exists() || !f.open(QIODevice::ReadOnly | QIODevice::Text)
-			|| !f.isReadable())
+                if (!f.exists() || !f.open(QIODevice::ReadOnly | QIODevice::Text) || !f.isReadable())
 		{
 			QMessageBox::critical(this, tr("Database not found"), 
 					tr("The database `%1` cannot be opened. Please proceed the steps of the wizard again.").arg(settings->value("file").toString()));
@@ -93,12 +96,15 @@ QMainWindow(parent), settings(new QSettings(this))
 		settings->setValue("warningDays", 7);
 		settings->setValue("criticalColor", "#7f0000");
 		settings->setValue("warningColor", "#7f7f00");
+                settings->setValue("viewColor", "#00ff00");
+                settings->setValue("editColor", "#0000ff");
 		settings->setValue("showInserter", true);
+                settings->setValue("showToolbar", true);
+                settings->setValue("showTabs", true);
 
 		if (!useWizard(this,settings))
 		{
-			QMessageBox::critical(0, QObject::tr("Wizard cancelled"),
-								  QObject::tr("You have not completed the wizard. The program will exit now."));
+                        QMessageBox::critical(0, QObject::tr("Wizard cancelled"), QObject::tr("You have not completed the wizard. The program will exit now."));
 			throw(1);
 		}
 	}
@@ -141,7 +147,8 @@ QMainWindow(parent), settings(new QSettings(this))
 	tableview->setModel(proxyModel);
 	tableview->setSortingEnabled(true);
 
-	cardinserterDockWidget = new QDockWidget(tr("New Entry"), this);
+        cardinserterDockWidget = new DockWidget(settings, tr("New Entry"), this);
+        connect(cardinserterDockWidget, SIGNAL(windowClosed()), this, SLOT(OnCloseCardInserter()));
 	CardInserter *cardinserter = new CardInserter(this);
 	cardinserterDockWidget->setWidget(cardinserter);
 	cardinserterDockWidget->hide();
@@ -158,7 +165,7 @@ QMainWindow(parent), settings(new QSettings(this))
 	connect(model, SIGNAL(commandInvoked(UndoCommand *)), this,
 			SLOT(push(UndoCommand *)));
 
-	QAction *print = new QAction(QIcon::fromTheme("document-print"), tr("Print"), this);
+	QAction *print = new QAction(QIcon::fromTheme("document-print", QIcon(":/icons/document-print.png")), tr("Print"), this);
 	connect(print, SIGNAL(triggered()), this, SLOT(print()));
 
 
@@ -171,11 +178,13 @@ QMainWindow(parent), settings(new QSettings(this))
 
 	listview->setModel(listmodel);
 
-	tabwidget = new QTabWidget(this);
-	tabwidget->addTab(listview, QIcon::fromTheme("view-fullscreen"), tr("View"));
-	tabwidget->addTab(tableview, QIcon::fromTheme("accessories-text-editor"), tr("Edit"));
+        tabwidget = new TabWidget(settings, this);
+        tabwidget->addTab(listview, QIcon::fromTheme("view-fullscreen"), tr("View"), "viewColor");
+        tabwidget->addTab(tableview, QIcon::fromTheme("accessories-text-editor"), tr("Edit"), "editColor");
 	setCentralWidget(tabwidget);
 	connect(tabwidget, SIGNAL(currentChanged(int)), this, SLOT(OnCurrentChanged(int)));
+
+
 
 
 
@@ -187,18 +196,18 @@ QMainWindow(parent), settings(new QSettings(this))
 
 
 
-	QAction *config = new QAction(QIcon::fromTheme("preferences-system", style()->standardIcon(QStyle::SP_ComputerIcon)), tr("Config"), this);
+	QAction *config = new QAction(QIcon::fromTheme("preferences-system", style()->standardIcon(QStyle::SP_ComputerIcon)), tr("Settings"), this);
 	connect(config, SIGNAL(triggered()), this, SLOT(launchConfig()));
 	config->setShortcut(tr("Ctrl+C"));
 	config->setStatusTip(tr("Edit Configuration"));
 	config->setWhatsThis(tr("Opens a configuration dialog to edit preferences."));
 
 
-	QAction *remove = new QAction(QIcon::fromTheme("edit-delete", style()->standardIcon(QStyle::SP_TrashIcon)), tr("Remove"), this);
-	connect(remove, SIGNAL(triggered()), this, SLOT(removeSelected()));
-	remove->setShortcut(tr("Ctrl+X"));
-	remove->setStatusTip(tr("Remove Entries"));
-	remove->setWhatsThis(tr("Removes the selected rows from the table."));
+        actionRemove = new QAction(QIcon::fromTheme("edit-delete", style()->standardIcon(QStyle::SP_TrashIcon)), tr("Remove"), this);
+        connect(actionRemove, SIGNAL(triggered()), this, SLOT(removeSelected()));
+        actionRemove->setShortcut(tr("Ctrl+X"));
+        actionRemove->setStatusTip(tr("Remove Entries"));
+        actionRemove->setWhatsThis(tr("Removes the selected rows from the table."));
 
 	QAction *undo = undostack->createUndoAction(this);
 	undo->setIcon(QIcon::fromTheme("edit-undo", style()->standardIcon(QStyle::SP_ArrowBack)));
@@ -220,17 +229,25 @@ QMainWindow(parent), settings(new QSettings(this))
 
 
 
+        actionShowCardInserter = new QAction(QIcon::fromTheme("insert-text"), tr("Item Creator"), this);
+        connect(actionShowCardInserter, SIGNAL(triggered()), this, SLOT(OnShowCardInserter()));
 
-	QAction *showCardInserter = new QAction(QIcon::fromTheme("insert-text"), tr("Item Creator"), this);
-	connect(showCardInserter, SIGNAL(triggered()), this, SLOT(OnShowCardInserter()));
-	showCardInserter->setStatusTip(tr("Show Insertion-Box"));
-	showCardInserter->setWhatsThis(tr("Pops-up a docked widget providing help for creating new entries."));
+        actionShowCardInserter->setStatusTip(tr("Show Insertion-Box"));
+        actionShowCardInserter->setWhatsThis(tr("Pops-up a docked widget providing help for creating new entries."));
+        actionShowCardInserter->setCheckable(true);
+        actionShowCardInserter->setChecked(true);
 	QAction *showUndoView = new QAction(tr("Undo List"), this);
 	connect(showUndoView, SIGNAL(triggered()), this, SLOT(OnShowUndoView()));
 	showUndoView->setStatusTip(tr("Show Undo-List"));
 	showUndoView->setWhatsThis(tr("Pops-up a docked widget providing a list of changes done to the table."));
+        actionShowToolbar = new QAction(tr("Show Tool-Bar"), this);
+        connect(actionShowToolbar, SIGNAL(triggered()), this, SLOT(OnShowToolbar()));
+        actionShowToolbar->setStatusTip(tr("Show Tool-Bar"));
+        actionShowToolbar->setWhatsThis(tr("Pops-up the tool-bar displaying icons of the most common options."));
+        actionShowToolbar->setCheckable(true);
+        actionShowToolbar->setChecked(settings->value("showToolbar", false).toBool());
 
-	QAction *aboutAction = new QAction(QIcon::fromTheme("help-about"), tr("About"), this);
+	QAction *aboutAction = new QAction(QIcon::fromTheme("help-about", QIcon(":/icons/about.png")), tr("About"), this);
 	connect(aboutAction, SIGNAL(triggered()), this, SLOT(OnAboutDialog()));
 	aboutAction->setStatusTip(tr("Shows the About-Dialog"));
 	aboutAction->setWhatsThis(tr("Information about the version and the contributors of this program."));
@@ -249,14 +266,15 @@ QMainWindow(parent), settings(new QSettings(this))
 	QMenu *editMenu = new QMenu(tr("&Edit"), this);
 	editMenu->addAction(undo);
 	editMenu->addAction(redo);
-	editMenu->addAction(remove);
+        editMenu->addAction(actionRemove);
 
 	QMenu *optionMenu = new QMenu(tr("&Options"), this);
 	optionMenu->addAction(config);
 
 	QMenu *windowMenu = new QMenu(tr("&Window"), this);
-	windowMenu->addAction(showCardInserter);
+        windowMenu->addAction(actionShowCardInserter);
 	windowMenu->addAction(showUndoView);
+        windowMenu->addAction(actionShowToolbar);
 
 	QMenu *helpMenu = new QMenu(tr("&Help"), this);
 	helpMenu->addAction(aboutAction);
@@ -273,7 +291,7 @@ QMainWindow(parent), settings(new QSettings(this))
 	/* QAction* undo = QAction* redo = */
 	toolbar = this->addToolBar(tr("Options"));
 	toolbar->addAction(save);
-	toolbar->addAction(remove);
+        toolbar->addAction(actionRemove);
 	toolbar->addAction(undo);
 	toolbar->addAction(redo);
 	toolbar->addAction(print);
@@ -287,7 +305,13 @@ QMainWindow(parent), settings(new QSettings(this))
 	else
 		restoreGeometry(geometry.toByteArray());
 
-	
+        if(settings->value("defaultTab", 0).toInt() != 0)
+            tabwidget->setCurrentIndex(1);
+}
+
+void MainWindow::OnCloseCardInserter()
+{
+    actionShowCardInserter->setChecked(false);
 }
 
 void MainWindow::OnCurrentChanged(int index)
@@ -296,12 +320,14 @@ void MainWindow::OnCurrentChanged(int index)
 	if(index == 0) 
 	{
 		cardinserterDockWidget->hide();
+                OnCloseCardInserter();
 	}
 	else
 	{
-		if(settings->value("showInserter", false).toBool())
+                if(settings->value("showInserter", true).toBool())
 			cardinserterDockWidget->show();
-		toolbar->show();
+                if(actionShowToolbar->isChecked())
+                    toolbar->show();
 	}
 }
 
@@ -318,9 +344,12 @@ void MainWindow::OnShowUndoView()
 
 void MainWindow::OnShowCardInserter()
 {
-	cardinserterDockWidget->show();
+    cardinserterDockWidget->setVisible(actionShowCardInserter->isChecked());
 }
-
+void MainWindow::OnShowToolbar()
+{
+    toolbar->setVisible(actionShowToolbar->isChecked());
+}
 
 void MainWindow::launchConfig()
 {
@@ -356,8 +385,7 @@ void MainWindow::closeEvent(QCloseEvent * event)
 	else
 		event->accept();
 	settings->setValue("mainwidget/geometry", saveGeometry());
-	if(tabwidget->currentIndex() != 0)
-		settings->setValue("showInserter", cardinserterDockWidget->isVisible());
+
 }
 
 bool sortIntReverse(int a, int b)
@@ -419,6 +447,12 @@ void MainWindow::print()
 	edit->render(printDialog.printer());
 	delete edit;
 }
+
+QAction* MainWindow::getRemoveAction()
+{
+    return actionRemove;
+}
+
 
 void MainWindow::save()
 {

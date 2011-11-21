@@ -27,7 +27,7 @@ int main_cli();
 #include <QTranslator>
 #include <QLibraryInfo>
 
-static void setEnv()
+static int launchApp(bool commandline)
 {
 	QCoreApplication::setOrganizationName(ORGANIZATION_NAME);
 	QCoreApplication::setOrganizationDomain(ORGANIZATION_DOMAIN);
@@ -36,9 +36,24 @@ static void setEnv()
 	QTranslator qttranslator;
 	qttranslator.load("qt_" + QLocale::system().name(), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
 	QCoreApplication::instance()->installTranslator(&qttranslator);
+
+
 	QTranslator translator;
-	translator.load(APPLICATION_NAME "_" + QLocale::system().name());
+	translator.load(":/translations/" APPLICATION_UNIXNAME "_" + QLocale::system().name());
 	QCoreApplication::instance()->installTranslator(&translator);
+
+	if(commandline)
+			return main_cli();
+	else try
+	{
+		MainWindow w;
+		w.show();
+		return qApp->exec();
+	}
+	catch(int)
+	{
+		return EXIT_FAILURE;
+	}
 }
 
 static void showHelp()
@@ -46,14 +61,10 @@ static void showHelp()
 	QTextStream cout(stdout, QIODevice::WriteOnly);
 	cout << APPLICATION_NAME << " - " << APPLICATION_VERSION << endl
 		<< QObject::tr("Arguments: ") << endl
-		<< "  -h\t\t" << QObject::
-		tr("Print Help (this message) and exit") << endl << "  -v\t\t" <<
-		QObject::
-		tr("Print version information and exit") << endl << "  -l\t\t" <<
-		QObject::
-		tr("Do not use graphical interface - just output to console") << endl
-		<< "  -q\t\t" << QObject::
-		tr("Only popup a window if there is something to remind me of") << endl;
+		<< "  -h\t\t" << QObject::tr("Print Help (this message) and exit") << endl 
+		<< "  -v\t\t" << QObject::tr("Print version information and exit") << endl 
+		<< "  -l\t\t" << QObject::tr("Do not use graphical interface - just output to console") << endl
+		<< "  -q\t\t" << QObject::tr("Only popup a window if there is something to remind me of") << endl;
 }
 
 int main(int argc, char *argv[])	// TODO: -v -> version!
@@ -65,8 +76,7 @@ int main(int argc, char *argv[])	// TODO: -v -> version!
 		if (strcmp("-l", argv[i]) == 0)
 		{
 			QCoreApplication app(argc, argv);
-			setEnv();
-			return main_cli();
+			return launchApp(true);
 		}
 		if (strcmp("-h", argv[i]) == 0 || strcmp("--help", argv[i]) == 0)
 		{
@@ -78,13 +88,10 @@ int main(int argc, char *argv[])	// TODO: -v -> version!
 			QTextStream cout(stdout, QIODevice::WriteOnly);
 			cout << APPLICATION_NAME << " - " << APPLICATION_VERSION << endl
 				<< "Copyright (C) 2011 Dominik Koeppl" << endl
-				<<
-				"License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>"
-				<< endl <<
-				"This is free software: you are free to change and redistribute it."
-				<< endl <<
-				"There is NO WARRANTY, to the extent permitted by law." <<
-				endl;
+				<< "License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>" << endl 
+				<< "This is free software: you are free to change and redistribute it." << endl 
+				<< "There is NO WARRANTY, to the extent permitted by law." 
+				<< endl;
 			return EXIT_SUCCESS;
 		}
 
@@ -95,16 +102,5 @@ int main(int argc, char *argv[])	// TODO: -v -> version!
 	}
 	QApplication app(argc, argv);
 	app.setWindowIcon(QIcon(":/icons/program.png"));
-	setEnv();
-	try
-	{
-		MainWindow w;
-		w.show();
-		return app.exec();
-	}
-	catch(int)
-	{
-		return EXIT_FAILURE;
-	}
-
+	return launchApp(false);
 }

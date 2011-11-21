@@ -33,6 +33,7 @@ Anniv::Anniv()
 		icons[i++] = QIcon(":/icons/memorial.png");
 		icons[i++] = QIcon(":/icons/wedding.png");
 		icons[i++] = QIcon(":/icons/namesday.png");
+		icons[i++] = QIcon(":/icons/invalid.png");
 	}
 	{
 		int i=0;
@@ -79,4 +80,14 @@ Anniv::Type Anniv::getType(QString str)
 	default:
 		return ANNIV_INVALID;
 	}
+}
+
+Anniv::Type Anniv::getTypeTranslated(QString str) const
+{
+	for(size_t i = 0; i < ANNIV_INVALID; ++i)
+	{
+		if(str == types[i])
+			return static_cast<Anniv::Type>(i);
+	}
+	return ANNIV_INVALID;
 }

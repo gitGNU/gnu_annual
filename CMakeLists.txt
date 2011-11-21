@@ -1,12 +1,31 @@
+# annual - Reminder for annual events
+# Keeps track of all your anniversaries and hopefully reminds you at the
+# right time.
+# Copyright (C) 2011 Dominik Köppl
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation, either version 3 of the License, or (at your option)
+# any later version.
+# 
+# This program is distributed in the hope that it will be useful, but WITHOUT 
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+# more details.
+# 
+# You should have received a copy of the GNU General Public License along
+# with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
 project(annual) # the name of your project
 set (APPLICATION_NAME Annual)
+set (APPLICATION_UNIXNAME annual)
 set (APPLICATION_VERSION_MAJOR 1)
 set (APPLICATION_VERSION_MINOR 0)
-set (APPLICATION_VERSION_PATCH 0)
+set (APPLICATION_VERSION_PATCH 1)
 set (APPLICATION_VERSION "${APPLICATION_VERSION_MAJOR}.${APPLICATION_VERSION_MINOR}.${APPLICATION_VERSION_PATCH}")
 set (PROJECT_SOURCE_DIR src)
-set (HOMEPAGE "http://annual.berlios.de/")
-set (EMAIL "niki@users.berlios.de")
+set (HOMEPAGE "http://www.nongnu.org/annual/")
+set (EMAIL "dominik@devwork.org")
 
 IF(WIN32 AND NOT UNIX)
 	set (EXECUTABLE "annual.exe")
@@ -24,6 +43,7 @@ find_package(Qt4 REQUIRED) # find and setup Qt4 for this project
 # tell cmake to process CMakeLists.txt in that subdirectory
 add_subdirectory(${PROJECT_SOURCE_DIR})
 add_subdirectory(perl)
+add_subdirectory(doc)
 
 
 #cpack

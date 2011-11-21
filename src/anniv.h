@@ -39,9 +39,8 @@ class Anniv
 
   private:
 	Anniv();
-	QIcon icons[ANNIV_INVALID];
-	QString types[ANNIV_INVALID];
-	
+	QIcon icons[ANNIV_INVALID+1];
+	QString types[ANNIV_INVALID+1];
 	QString longformat, shortformat;
 
   public:
@@ -67,6 +66,7 @@ class Anniv
 
 
 	static Type getType(QString str);
+	Type getTypeTranslated(QString str) const;
 	const QString & shortDateFormat() const
 	{
 		return shortformat;

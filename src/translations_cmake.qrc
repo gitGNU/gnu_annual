@@ -17,21 +17,8 @@
    - with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <RCC>
-    <qresource prefix="/">
-        <file alias="COPYING">../COPYING</file>
-        <file alias="AUTHORS">../AUTHORS</file>
-        <file alias="ABOUT">../ABOUT</file>
-        <file alias="THANKS">../THANKS</file>
-        <file>icons/anniversary.png</file>
-        <file>icons/birthday.png</file>
-        <file>icons/deathday.png</file>
-        <file>icons/event.png</file>
-        <file>icons/holiday.png</file>
-        <file>icons/memorial.png</file>
-        <file>icons/namesday.png</file>
-        <file>icons/wedding.png</file>
-        <file>icons/program.png</file>
-		<file>icons/document-print.png</file>
-		<file>icons/about.png</file>
+    <qresource prefix="/translations">
+		<file>annual_de_DE.qm</file>
+		<file>annual_en_US.qm</file>
     </qresource>
 </RCC>

@@ -15,23 +15,22 @@
  * You should have received a copy of the GNU General Public License along
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef TABLEVIEW_H
-#define TABLEVIEW_H
+#ifndef DOCKWIDGET_H
+#define DOCKWIDGET_H
+#include <QDockWidget>
+class QSettings;
 
-#include <QTableView>
-class MainWindow;
-
-class TableView : public QTableView
+class DockWidget : public QDockWidget
 {
+    Q_OBJECT
+    QSettings* settings;
+    QString title;
 public:
-    TableView(MainWindow* parent = 0);
-    QModelIndexList selectedIndexes () const 
-	{ 
-		return QTableView::selectedIndexes(); 
-	}
-    void contextMenuEvent ( QContextMenuEvent * event );
-private:
-    MainWindow* mainwindow;
+    DockWidget(QSettings* _settings, const QString & _title, QWidget * parent = 0, Qt::WindowFlags flags = 0 );
+protected:
+    void closeEvent ( QCloseEvent* );
+signals:
+    void windowClosed();
 };
 
-#endif // TEXTTABLEVIEW_H
+#endif // DOCKWIDGET_H

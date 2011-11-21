@@ -28,12 +28,16 @@ class QSettings;
 class QSortFilterProxyModel;
 class TableView;
 class QToolBar;
-class QTabWidget;
+class TabWidget;
+class DockWidget;
+class QAction;
 
 class MainWindow:public QMainWindow
 {
-  Q_OBJECT public:
+  Q_OBJECT
+  public:
 	MainWindow(QWidget * parent = 0);
+        QAction* getRemoveAction();
   public slots:
 	void push(UndoCommand * cmd);
 	void push(const Card & card);
@@ -44,8 +48,11 @@ class MainWindow:public QMainWindow
 
 	void OnShowUndoView();
 	void OnShowCardInserter();
+        void OnShowToolbar();
+        void OnCloseCardInserter();
 	void OnAboutDialog();
 	void OnCurrentChanged(int);
+
   protected:
 	virtual void closeEvent(QCloseEvent * event);
   private:
@@ -55,11 +62,12 @@ class MainWindow:public QMainWindow
 	TableModel *model;
 	QSettings *settings;
 	QToolBar *toolbar;
-	QTabWidget *tabwidget;
-
-
+        TabWidget *tabwidget;
+        QAction *actionRemove;
+        QAction *actionShowToolbar;
+        QAction *actionShowCardInserter;
 	QDockWidget *undoviewDockWidget;
-	QDockWidget *cardinserterDockWidget;
+        DockWidget *cardinserterDockWidget;
 };
 
 

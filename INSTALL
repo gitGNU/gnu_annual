@@ -1,0 +1,14 @@
+Compilation of the project is straightforward:
+
+You need to have the following components installed:
+* Qt 4.6 or greater
+* perl 5
+* the perl-library XML-XPath
+* Log4perl
+* cmake
+
+Invoking the commands in the order
+* cmake .
+* make
+* make install (or make DESTDIR=anywhereelse install)
+will compile and install the software (default in /usr/local/).

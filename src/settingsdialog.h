@@ -25,6 +25,8 @@ class QLineEdit;
 class QPushButton;
 class QColor;
 class QSettings;
+class QCheckBox;
+class QRadioButton;
 
 class SettingsDialog : public QDialog
 {
@@ -39,9 +41,23 @@ class SettingsDialog : public QDialog
 	QPushButton *selectFile;
 	QPushButton *warningButton;
 	QPushButton *criticalButton;
+        QPushButton *colorEditButton;
+        QPushButton *colorViewButton;
+
 	QColor criticalColor;
 	QColor warningColor;
+        QColor editColor;
+        QColor viewColor;
 	QSettings *settings;
+
+        QCheckBox* hasWindowBorder;
+    QCheckBox* showInserter;
+    QCheckBox* showToolbar;
+ QCheckBox* showTabs;
+
+    QRadioButton* setViewAsDefault;
+    QRadioButton* setEditAsDefault;
+
 
   private slots:
 	void OnAccepted()
@@ -53,7 +69,8 @@ class SettingsDialog : public QDialog
 	void selectFileSlot();
 	void warningButtonSlot();
 	void criticalButtonSlot();
-
+        void OnColorViewButton();
+        void OnColorEditButton();
 };
 #endif // SETTINGSDIALOG_H
 

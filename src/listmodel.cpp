@@ -100,17 +100,23 @@ static QString formatComment(Anniv::Type type, int daysleft)
 	switch (type)
 	{
 	case Anniv::ANNIVERSARY:
-		return ListModel::tr("In %n day(s) is %1, exactly at %2.", "", daysleft);
+		return daysleft == 0 ? ListModel::tr("Today is %1, exactly at %2.")
+			: ListModel::tr("In %n day(s) is %1, exactly at %2.", "", daysleft);
 	case Anniv::BIRTHDAY:
-		return ListModel::tr("In %n day(s) %1 has birthday, exactly at %2.", "", daysleft);
+		return daysleft == 0 ? ListModel::tr("Today, %1 has birthday, exactly at %2.")
+		: ListModel::tr("In %n day(s) %1 has birthday, exactly at %2.", "", daysleft);
 	case Anniv::DEATHDAY:
-		return ListModel::tr("In %n day(s) %1 died, exactly at %2.", "", daysleft);
+		return daysleft == 0 ? ListModel::tr("Today is %1's obit, exactly at %2.")
+		: ListModel::tr("In %n day(s) is %1's obit, exactly at %2.", "", daysleft);
 	case Anniv::NAMESDAY:
-		return ListModel::tr("In %n day(s) %1 has namesday, exactly at %2.", "", daysleft);
+		return daysleft == 0 ? ListModel::tr("Today, %1 has namesday, exactly at %2.")
+		: ListModel::tr("In %n day(s) %1 has namesday, exactly at %2.", "", daysleft);
 	case Anniv::WEDDING:
-		return ListModel::tr("In %n day(s) is %1 %3th wedding day, exactly at %2.", "", daysleft);
+		return daysleft == 0 ? ListModel::tr("Today is %1's %3th wedding day, exactly at %2.")
+		: ListModel::tr("In %n day(s) is %1's %3th wedding day, exactly at %2.", "", daysleft);
 	default:
-		return ListModel::tr("In %n day(s) is %1, exactly at %2.", "", daysleft);
+		return daysleft == 0 ? ListModel::tr("Today is %1, exactly at %2.")
+		: ListModel::tr("In %n day(s) is %1, exactly at %2.", "", daysleft);
 	}
 }
 
@@ -119,17 +125,23 @@ static QString formatCommentWithYear(Anniv::Type type, int daysleft)
 	switch (type)
 	{
 	case Anniv::BIRTHDAY:
-		return ListModel::tr("In %n day(s) at %4 %1 becomes %3, %1 was born on %2.", "", daysleft);
+		return daysleft == 0 ? ListModel::tr("Today at %4 %1 becomes %3, %1 was born on %2.")
+		: ListModel::tr("In %n day(s) at %4 %1 becomes %3, %1 was born on %2.", "", daysleft);
 	case Anniv::ANNIVERSARY:
-		return ListModel::tr("In %n day(s) at %4 is %1 for the %3th time. This day originated on %2.","", daysleft);
+		return daysleft == 0 ? ListModel::tr("Today at %4 is %1 for the %3th time. This day originated on %2.")
+		: ListModel::tr("In %n day(s) at %4 is %1 for the %3th time. This day originated on %2.","", daysleft);
 	case Anniv::DEATHDAY:
-		return ListModel::tr("In %n day(s) at %4 %1 is dead for %3 years. %1 died on %3.", "", daysleft);
+		return daysleft == 0 ? ListModel::tr("Today at %4 %1 is dead for %3 years. %1 died on %3.")
+		: ListModel::tr("In %n day(s) at %4 %1 is dead for %3 years. %1 died on %3.", "", daysleft);
 	case Anniv::NAMESDAY:
-		return ListModel::tr("In %n day(s) at %4 %1 has namesday. This day originated on %2, thus is %3 ages old.", "", daysleft);
+		return daysleft == 0 ? ListModel::tr("Today at %4 %1 has namesday. This day originated on %2, thus it is %3 years old.")
+		: ListModel::tr("In %n day(s) at %4 %1 has namesday. This day originated on %2, thus it is %3 years old.", "", daysleft);
 	case Anniv::WEDDING:
-		return ListModel::tr("In %n day(s) at %4 is %1 %3th wedding day. %1 is married since %2.", "", daysleft);
+		return daysleft == 0 ? ListModel::tr("Today at %4 is %1's %3th wedding day. %1 is married since %2.")
+		: ListModel::tr("In %n day(s) at %4 is %1's %3th wedding day. %1 is married since %2.", "", daysleft);
 	default:
-		return ListModel::tr("In %n day(s) at %4 is %1 for the %3th time. This day originated on %2.", "", daysleft);
+		return daysleft == 0 ? ListModel::tr("Today at %4 is %1 for the %3th time. This day originated on %2.")
+		: ListModel::tr("In %n day(s) at %4 is %1 for the %3th time. This day originated on %2.", "", daysleft);
 	}
 }
 
@@ -178,7 +190,10 @@ QVariant ListModel::data(const QModelIndex & index, int role) const
 
 	}
 	else if (role == Qt::DecorationRole)
-		return Anniv::instance().getIcon(Anniv::getType(model->data(model->index(permut.at(index.row()).row(), TableModel::COLUMN_TYPE)).toString()));
+	{
+		const Anniv& anniv = Anniv::instance();
+		return anniv.getIcon(anniv.getTypeTranslated(model->data(model->index(permut.at(index.row()).row(), TableModel::COLUMN_TYPE)).toString()));
+	}
 	else
 		return QVariant();
 }

@@ -6,15 +6,13 @@ TEMPLATE = app
 #CONFIG += qt release warn_on
 
 SOURCES += \
-aboutdialog.cpp  card.cpp          listdelegate.cpp  main_cli.cpp  mainwindow.cpp      tabledelegate.cpp  tableview.cpp    wizardpages.cpp \
-anniv.cpp        cardinserter.cpp  listmodel.cpp     main.cpp      settingsdialog.cpp  tablemodel.cpp     undocommand.cpp
+aboutdialog.cpp anniv.cpp card.cpp cardinserter.cpp dockwidget.cpp listdelegate.cpp listmodel.cpp main_cli.cpp main.cpp mainwindow.cpp settingsdialog.cpp tabledelegate.cpp tablemodel.cpp tableview.cpp tabwidget.cpp undocommand.cpp wizardpages.cpp
 
 HEADERS +=  \
-aboutdialog.h  card.h          config.h       listdelegate.h  mainwindow.h      tabledelegate.h  tableview.h    wizardpages.h \
-anniv.h        cardinserter.h  ioexception.h  listmodel.h     settingsdialog.h  tablemodel.h     undocommand.h
+aboutdialog.h cardinserter.h dockwidget.h listmodel.h mainwindow.h settingsdialog.h tablemodel.h tabwidget.h wizardpages.h
 FORMS += 
-RESOURCES += annual.qrc
+RESOURCES += annual.qrc translations.qrc
 
-TRANSLATIONS += translations/annual_en.ts
+TRANSLATIONS += translations/annual_en_US.ts translations/annual_de_DE.ts
 
 QMAKE_CXXFLAGS = -ggdb -O0 -Wextra -Wall
