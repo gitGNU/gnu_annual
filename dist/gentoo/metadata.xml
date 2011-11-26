@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer>
+                <email>dominik@devwork.org</email>
+                <name>Dominik Köppl</name>
+	</maintainer>
+	<longdescription lang="en">
+		Keeps track of pending events and reminds you hopefully in right time.
+		Provided by a list of events stored in a database file, this program sorts all events out,
+		which will not come up in the next days. If there are remaining days, they
+		will be displayed either in command-line or in a Qt-Window.
+	</longdescription>
+	<use>
+	</use>
+</pkgmetadata>
