@@ -20,8 +20,9 @@
 d=`mktemp -d`
 fd="$d/app-office/annual"
 ebuild='annual-9999.ebuild'
+cd `dirname $0` &&
 mkdir -p "$fd" &&
-cp $ebuild "$fd/" &&
+cp * "$fd/" &&
 cd "$fd/" &&
 ebuild $ebuild manifest &&
 ebuild $ebuild merge

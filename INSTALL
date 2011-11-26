@@ -1,5 +1,6 @@
-Compilation of the project is straightforward:
+=== Installing Annual ===
 
+== Requirements ==
 You need to have the following components installed:
 * Qt 4.6 or greater
 * perl 5
@@ -7,6 +8,23 @@ You need to have the following components installed:
 * Log4perl
 * cmake
 
+== Using a package manager ==
+We currently support Gentoo Linux, Arch Linux and derivates of Debian and Redhat's packaging system.
+
+= Gentoo Linux / Arch Linux =
+See subfolder dist/gentoo or dist/arch respectively.
+
+= Debian =
+Invoking the commands in the order
+* cmake .
+* cpack -P debian
+
+= Redhat =
+Invoking the commands in the order
+* cmake .
+* cpack -P redhat
+
+= Other Systems =
 Invoking the commands in the order
 * cmake .
 * make

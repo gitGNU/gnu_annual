@@ -21,7 +21,7 @@ set (APPLICATION_NAME Annual)
 set (APPLICATION_UNIXNAME annual)
 set (APPLICATION_VERSION_MAJOR 1)
 set (APPLICATION_VERSION_MINOR 0)
-set (APPLICATION_VERSION_PATCH 1)
+set (APPLICATION_VERSION_PATCH 2)
 set (APPLICATION_VERSION "${APPLICATION_VERSION_MAJOR}.${APPLICATION_VERSION_MINOR}.${APPLICATION_VERSION_PATCH}")
 set (PROJECT_SOURCE_DIR src)
 set (HOMEPAGE "http://www.nongnu.org/annual/")
@@ -44,7 +44,6 @@ find_package(Qt4 REQUIRED) # find and setup Qt4 for this project
 add_subdirectory(${PROJECT_SOURCE_DIR})
 add_subdirectory(perl)
 add_subdirectory(doc)
-
 
 #cpack
 include (InstallRequiredSystemLibraries)

@@ -18,13 +18,14 @@
 SNAPSHOT="yes"
 EAPI="2"
 
-inherit git cmake-utils
+inherit git-2 cmake-utils
 
 DESCRIPTION="Keeps track of your anniversaries and reminds you hopefully at time."
 HOMEPAGE="http://www.nongnu.org/annual/"
 EGIT_REPO_URI="git://git.savannah.nongnu.org/annual.git"
 SRC_URI=""
 LANGUAGES="linguas_en linguas_de"
+IUSE=""
 
 LICENSE="GPL-3"
 SLOT="0"
@@ -43,5 +44,5 @@ RDEPEND="
 RESTRICT=""
 
 src_unpack() {
-	git_src_unpack
+	git-2_src_unpack
 }

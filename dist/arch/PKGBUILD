@@ -1,3 +1,4 @@
+# Maintainer: Dominik Köppl <dominik@devwork.org>
 #
 # annual - Reminder for annual events
 # Keeps track of all your anniversaries and hopefully reminds you at the right time.
@@ -26,6 +27,7 @@ url='http://www.nongnu.org/annual/'
 license=('GPL3')
 depends=('qt>=4.6', 'perl-xml-xpath')
 options=('strip')
+conflicts=($_pkgname)
 
 #install="$pkgname.install"
 #source=($pkgname)
@@ -41,7 +43,7 @@ build() {
 		cd $_gitname && git pull origin
 		msg "The local files are updated."
 	else
-		git clone $_gitroot $_gitname
+		git clone --depth=1 $_gitroot $_gitname
 	fi
 	msg "GIT checkout done or server timeout"
 	msg "Starting make..."
