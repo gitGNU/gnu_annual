@@ -17,24 +17,42 @@
 # You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pkgname=annual
-pkgver=1.0.2
+pkgname=annual-git
+_pkgname=annual
+pkgver=20110809
 pkgrel=1
 pkgdesc='Reminds for annual events like birthdays, holidays, etc.'
 arch=('i686' 'x86_64')
 url='http://www.nongnu.org/annual/'
 license=('GPL3')
 depends=('qt>=4.6', 'perl-xml-xpath')
-source=(http://download.savannah.gnu.org/releases/annual/$pkgname-$pkgver.tar.gz)
-md5sums=('75ac0e5f5b352e750232bba7bf13b3e2')
-conflicts=(annual-git)
+options=('strip')
+conflicts=($_pkgname)
+
+#install="$pkgname.install"
+#source=($pkgname)
+
+_gitroot="git://git.savannah.nongnu.org/$_pkgname.git"
+_gitname="$_pkgname"
 
 build() {
-	cd "$srcdir/$pkgname"
+    cd ${srcdir}
+
+	msg "Connecting to GIT server...."
+	if [ -d $_gitname ] ; then
+		cd $_gitname && git pull origin
+		msg "The local files are updated."
+	else
+		git clone --depth=1 $_gitroot $_gitname
+	fi
+	msg "GIT checkout done or server timeout"
+	msg "Starting make..."
+	cd "$srcdir/$_gitname"
 	cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=RelWithDebInfo .
 	make 
 }
+
 package() {
-	cd "$srcdir/$pkgname"
+	cd "$srcdir/$_gitname"
 	make DESTDIR=$pkgdir install
 }

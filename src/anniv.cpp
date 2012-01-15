@@ -18,13 +18,15 @@
 #include <QIcon>
 #include <QLocale>
 #include "anniv.h"
+#include <QApplication>
 
-
+#include <iostream>
 Anniv::Anniv()
 {
-
+	if(QApplication::type() != QApplication::Tty)
 	{
 		int i=0;
+		std::cout << "HI";
 		icons[i++] = QIcon(":/icons/anniversary.png");
 		icons[i++] = QIcon(":/icons/birthday.png");
 		icons[i++] = QIcon(":/icons/deathday.png");
@@ -34,6 +36,7 @@ Anniv::Anniv()
 		icons[i++] = QIcon(":/icons/wedding.png");
 		icons[i++] = QIcon(":/icons/namesday.png");
 		icons[i++] = QIcon(":/icons/invalid.png");
+		std::cout << "HI";
 	}
 	{
 		int i=0;

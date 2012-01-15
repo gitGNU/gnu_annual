@@ -1,5 +1,3 @@
-# Maintainer: Dominik Köppl <dominik@devwork.org>
-#
 # annual - Reminder for annual events
 # Keeps track of all your anniversaries and hopefully reminds you at the right time.
 # Copyright (C) 2011 Dominik Köppl
@@ -17,24 +15,29 @@
 # You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pkgname=annual
-pkgver=1.0.2
-pkgrel=1
-pkgdesc='Reminds for annual events like birthdays, holidays, etc.'
-arch=('i686' 'x86_64')
-url='http://www.nongnu.org/annual/'
-license=('GPL3')
-depends=('qt>=4.6', 'perl-xml-xpath')
-source=(http://download.savannah.gnu.org/releases/annual/$pkgname-$pkgver.tar.gz)
-md5sums=('75ac0e5f5b352e750232bba7bf13b3e2')
-conflicts=(annual-git)
+SNAPSHOT="yes"
+EAPI="3"
 
-build() {
-	cd "$srcdir/$pkgname"
-	cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=RelWithDebInfo .
-	make 
-}
-package() {
-	cd "$srcdir/$pkgname"
-	make DESTDIR=$pkgdir install
-}
+inherit cmake-utils
+
+DESCRIPTION="Keeps track of your anniversaries and reminds you hopefully at time."
+HOMEPAGE="http://www.nongnu.org/annual/"
+SRC_URI="http://download.savannah.gnu.org/releases/annual/${PN}-${PV}.tar.gz"
+LANGUAGES="linguas_en linguas_de"
+IUSE=""
+
+LICENSE="GPL-3"
+SLOT="0"
+KEYWORDS="~x86 ~amd64"
+
+DEPEND="
+	>=x11-libs/qt-gui-4.4.2
+	"
+RDEPEND="
+	dev-lang/perl
+	dev-perl/XML-XPath
+	dev-perl/Log-Log4perl
+	>=x11-libs/qt-gui-4.4.2
+"
+RESTRICT=""
+
