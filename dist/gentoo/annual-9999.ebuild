@@ -33,13 +33,13 @@ KEYWORDS="~x86 ~amd64"
 
 DEPEND="
 	dev-vcs/git
-	>=x11-libs/qt-gui-4.4.2
+	>=x11-libs/qt-gui-5
 	"
 RDEPEND="
 	dev-lang/perl
 	dev-perl/XML-XPath
 	dev-perl/Log-Log4perl
-	>=x11-libs/qt-gui-4.4.2
+	>=x11-libs/qt-gui-5
 "
 RESTRICT=""
 
