@@ -40,8 +40,10 @@ class TableModel : public QAbstractTableModel
 		COLUMN_END
 	};
 
+	Qt::DropActions supportedDropActions() const;
 
-	  TableModel(QString filename, QObject * parent = 0);
+
+	TableModel(QString filename, QObject * parent = 0);
 
 	const Card & at(int i)
 	{

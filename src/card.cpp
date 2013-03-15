@@ -68,12 +68,13 @@ QStringList readCSV(QString line)
 			if (quote == true && line[pos] == '\"')
 			{
 				++pos;
-				if (line[pos].toAscii() == sep)
+				const QChar& c = line[pos];
+				if(c.toLatin1() == sep)
 				{
 					line.remove(pos - 1, 1);
 					break;
 				}
-				else if (line[pos].toAscii() == '\"')
+				else if(c.toLatin1() == '\"')
 				{
 					line.remove(pos - 1, 1);
 				}

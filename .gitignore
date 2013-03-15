@@ -1,3 +1,11 @@
 todo
 homepage
 src/annual.pro.user
+src/config.h
+
+*.class
+*~
+*.jar
+*.o
+*.so
+*.hi

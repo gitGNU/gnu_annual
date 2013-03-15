@@ -22,8 +22,11 @@
 
 TableModel::TableModel(QString filename, QObject * parent):QAbstractTableModel(parent), file(new QFile(filename, this)), cards(readCards(file))
 {
-	setSupportedDragActions(Qt::CopyAction | Qt::MoveAction);
 	file->close();
+}
+Qt::DropActions TableModel::supportedDropActions() const
+{
+	return Qt::CopyAction | Qt::MoveAction;
 }
 
 void TableModel::save()

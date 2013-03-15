@@ -21,7 +21,7 @@ set (APPLICATION_NAME Annual)
 set (APPLICATION_UNIXNAME annual)
 set (APPLICATION_VERSION_MAJOR 1)
 set (APPLICATION_VERSION_MINOR 0)
-set (APPLICATION_VERSION_PATCH 2)
+set (APPLICATION_VERSION_PATCH 3)
 set (APPLICATION_VERSION "${APPLICATION_VERSION_MAJOR}.${APPLICATION_VERSION_MINOR}.${APPLICATION_VERSION_PATCH}")
 set (PROJECT_SOURCE_DIR src)
 set (HOMEPAGE "http://www.nongnu.org/annual/")
@@ -36,9 +36,14 @@ ENDIF(WIN32 AND NOT UNIX)
 
 ENABLE_TESTING()
 
-cmake_minimum_required(VERSION 2.4.0)
+cmake_minimum_required(VERSION 2.8.8)
+#set(CMAKE_AUTOMOC ON)
 
-find_package(Qt4 REQUIRED) # find and setup Qt4 for this project
+
+
+find_package(Qt5Widgets)
+find_package(Qt5PrintSupport)
+#find_package(Qt5 REQUIRED) # find and setup Qt5 for this project
 
 # tell cmake to process CMakeLists.txt in that subdirectory
 add_subdirectory(${PROJECT_SOURCE_DIR})
