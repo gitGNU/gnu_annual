@@ -28,6 +28,8 @@ class AboutDialog:public QDialog
   private:
 	QTextBrowser * createBrowser(QString res);
 	QLabel *createLabel(QString res);
+  private slots:
+    void OnDonate();
 };
 #endif // ABOUTDIALOG_H
 

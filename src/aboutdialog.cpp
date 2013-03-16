@@ -26,6 +26,9 @@
 #include <QMessageBox>
 #include <QTextCodec>
 #include <QTextStream>
+#include <QPushButton>
+#include <QDesktopServices>
+#include <QUrl>
 #include "config.h"
 
 AboutDialog::AboutDialog()
@@ -50,14 +53,22 @@ AboutDialog::AboutDialog()
 	tabwidget->addTab(createLabel(":/THANKS"), tr("Thanks"));
 	tabwidget->addTab(createBrowser(":/COPYING"), tr("License"));
 
-	QDialogButtonBox *closeButton =
-		new QDialogButtonBox(QDialogButtonBox::Close);
-	connect(closeButton, SIGNAL(rejected()), this, SLOT(reject()));
+	QPushButton *donateButton = new QPushButton(tr("Donate"));
+	connect(donateButton, SIGNAL(clicked()), this, SLOT(OnDonate()));
+	
+	QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Close);
+	buttonBox->addButton(donateButton, QDialogButtonBox::AcceptRole);
+	connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+
 	mainlayout->addLayout(titlelayout);
 	mainlayout->addWidget(tabwidget);
-	mainlayout->addWidget(closeButton);
+	mainlayout->addWidget(buttonBox);
 
 	setLayout(mainlayout);
+}
+void AboutDialog::OnDonate()
+{   
+    QDesktopServices::openUrl(QUrl("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RCRXP4DYESAZC"));
 }
 
 QTextBrowser *AboutDialog::createBrowser(QString res)
