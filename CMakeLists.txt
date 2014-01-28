@@ -48,6 +48,7 @@ find_package(Qt5PrintSupport)
 # tell cmake to process CMakeLists.txt in that subdirectory
 add_subdirectory(${PROJECT_SOURCE_DIR})
 add_subdirectory(perl)
+add_subdirectory(dist/debian)
 add_subdirectory(doc)
 
 #cpack

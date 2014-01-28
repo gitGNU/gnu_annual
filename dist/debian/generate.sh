@@ -1,7 +1,6 @@
-#!/usr/bin/env sh
+#!/bin/sh
 #
-# Tests conversion of various files with 2annual
-# part of annual - Reminder for annual events
+# annual - Reminder for annual events
 # Keeps track of all your anniversaries and hopefully reminds you at the right time.
 # Copyright (C) 2011 Dominik Köppl
 #
@@ -18,35 +17,9 @@
 # You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-if [ $# -ne 2 ]; then 
-	echo "Usage: $0 program test"
-	exit 0
-fi
-
-program="$1"
-testpath="`dirname $0`/tests"
-tmpfile=`mktemp`
-trap 'rm -fr $tmpfiles' 1 2 3 15
-
-case $2 in
-0)
-	infile=gmx.gmxa
-	checkfile=gmx.ok
-	;;
-1)
-	infile=outlook.csv
-	checkfile=outlook.ok
-	;;
-2)
-	infile=vcard.vcf
-	checkfile=vcard.ok
-	;;
-*)
-	echo "Unknown parameter : $2"
-	exit 1
-esac
-$program -i "$testpath/$infile" -o "$tmpfile"
-diff "$testpath/$checkfile" "$tmpfile"
-result=$?
-rm -fr $tmpfiles
-exit $result
+sudo apt-get install qtbase5-dev qttools5-dev-tools qttools5-dev debhelper liblog-log4perl-perl libxml-xpath-perl debhelper
+cd `dirname $0` &&
+cd ../..
+cmake . &&
+cp -a dist/debian . &&
+fakeroot dh binary

@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 #
 # annual - Reminder for annual events
 # Keeps track of all your anniversaries and hopefully reminds you at the right time.

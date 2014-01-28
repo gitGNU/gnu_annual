@@ -1,0 +1,44 @@
+# annual - Reminder for annual events
+# Keeps track of all your anniversaries and hopefully reminds you at the right time.
+# Copyright (C) 2011 Dominik Köppl
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation, either version 3 of the License, or (at your option)
+# any later version.
+# 
+# This program is distributed in the hope that it will be useful, but WITHOUT 
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+# more details.
+# 
+# You should have received a copy of the GNU General Public License along
+# with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Source: annual
+Section: misc
+Priority: optional
+Maintainer: Dominik Köppl <dominik@devwork.org>
+Build-Depends: debhelper (>= 9),
+               gcc,
+               g++,
+               qt5-qmake,
+               qttools5-dev-tools,
+               qttools5-dev,
+               qtbase5-dev,
+               cmake,
+               perl,
+               libxml-xpath-perl,
+               liblog-log4perl-perl
+Standards-Version: @APPLICATION_VERSION@
+Homepage: http://www.freiwerkler.de/gar/
+
+Package: annual
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: Keeps track of pending events and reminds you hopefully in right time
+ Provided by a list of events stored in different files, this program sorts these events out,
+ which will not come up in the next days. The result can be displayed in command-line or
+ via Qt. Moreover, a manager supports the graphical edition of the events.
+ .
+ Note that the script `2annual` needs perl.
